@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Central de Eventos</title>
+    <meta name="description" content="Busca dos modelos de evento (fluxos de vídeo e áudio) das produções COT." />
+    <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f6fb" media="(prefers-color-scheme: light)" />
+
+    <!-- PWA / Adicionar à tela inicial -->
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" href="assets/icons/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Eventos COT" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+    <script type="module" src="js/app.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#/" aria-label="Central de Eventos — início">
+        <img src="assets/icons/icon-192.png" alt="" width="32" height="32" />
+        <span>
+          <strong>Central de Eventos</strong>
+          <small>Modelos de produção COT</small>
+        </span>
+      </a>
+      <button class="install-btn" id="install-btn" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14" /></svg>
+        Instalar
+      </button>
+    </header>
+
+    <main id="app">
+      <!-- HOME -->
+      <section id="view-home" class="view" aria-labelledby="home-title">
+        <div class="hero">
+          <h1 id="home-title">Qual evento você vai montar?</h1>
+          <p class="hero-sub">Busque por praça, estúdio, controle, sinal ou meio de transporte.</p>
+
+          <div class="search" role="combobox" aria-expanded="false" aria-haspopup="listbox" aria-owns="search-list">
+            <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5" />
+            </svg>
+            <input
+              id="search-input"
+              type="search"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Ex.: Jungle, BHE, 6 SP, TVU, PGM limpo…"
+              aria-label="Buscar modelos de evento"
+              aria-autocomplete="list"
+              aria-controls="search-list"
+            />
+            <kbd class="search-kbd" aria-hidden="true">/</kbd>
+            <button class="search-clear" id="search-clear" type="button" aria-label="Limpar busca" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+            </button>
+            <ul id="search-list" class="search-list" role="listbox" hidden></ul>
+          </div>
+
+          <div class="chips" id="praca-chips" role="toolbar" aria-label="Filtrar por praça"></div>
+        </div>
+
+        <div class="results-head">
+          <h2 id="results-title">Todos os modelos</h2>
+          <span id="results-count" class="muted"></span>
+        </div>
+        <div id="results" class="cards"></div>
+
+        <aside class="notes-card" id="anotacoes"></aside>
+      </section>
+
+      <!-- DETALHE -->
+      <section id="view-evento" class="view" hidden></section>
+    </main>
+
+    <dialog id="original-dialog" class="original-dialog">
+      <div class="original-head">
+        <strong id="original-title">Diagrama original</strong>
+        <div class="original-actions">
+          <button type="button" id="original-zoom" class="ghost-btn">Ampliar</button>
+          <button type="button" class="ghost-btn" data-close aria-label="Fechar">Fechar</button>
+        </div>
+      </div>
+      <div class="original-body"><img id="original-img" alt="" /></div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>
