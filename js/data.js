@@ -1,6 +1,7 @@
 /*
- * Os modelos de evento vêm de data/eventos.json, gerado automaticamente a
- * partir dos .pptx da pasta do SharePoint (ver automacao/README.md).
+ * Os modelos de evento vêm de data/eventos.json, gerado pelo GitHub Actions a
+ * partir dos .pptx que as baias enviam para pptx/ (ver baias/README.md).
+ * Com ?fonte=teste na URL, o site lê data/eventos-teste.json (pasta pptx-teste/).
  * Este arquivo só guarda configuração de exibição e o carregamento.
  *
  * Formato de um sinal no JSON:
@@ -27,12 +28,15 @@ export function praca(sigla) {
   return PRACAS[sigla] ?? { ...PRACA_PADRAO, nome: sigla ?? "" };
 }
 
+export const FONTE_TESTE = new URLSearchParams(location.search).get("fonte") === "teste";
+
 export async function carregarDados() {
+  const arquivo = FONTE_TESTE ? "data/eventos-teste.json" : "data/eventos.json";
   // no-cache: revalida sempre com o servidor, para pegar a última publicação.
-  const res = await fetch("data/eventos.json", { cache: "no-cache" });
-  if (!res.ok) throw new Error(`HTTP ${res.status} ao carregar data/eventos.json`);
+  const res = await fetch(arquivo, { cache: "no-cache" });
+  if (!res.ok) throw new Error(`HTTP ${res.status} ao carregar ${arquivo}`);
   const dados = await res.json();
-  if (!Array.isArray(dados.eventos)) throw new Error("data/eventos.json sem a lista 'eventos'");
+  if (!Array.isArray(dados.eventos)) throw new Error(`${arquivo} sem a lista 'eventos'`);
   return dados;
 }
 

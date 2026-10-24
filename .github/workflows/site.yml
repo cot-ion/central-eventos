@@ -1,0 +1,70 @@
+name: Gerar e publicar o site
+
+# Roda a cada push no main — inclusive os commits que as baias fazem quando
+# um .pptx muda — e publica o site no GitHub Pages (Source: GitHub Actions).
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Uma publicação por vez; se chegarem vários pushes, roda só o mais recente.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  gerar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: automacao/requirements.txt
+
+      - run: pip install -r automacao/requirements.txt
+
+      - name: Converter os .pptx e montar o site
+        env:
+          SITE: ${{ steps.pages.outputs.base_url }}
+        run: |
+          mkdir -p _site/data
+          cp -r index.html manifest.webmanifest sw.js css js assets _site/
+
+          # JSON publicado antes: reserva para .pptx que não puderem ser lidos.
+          curl -fsSL "$SITE/data/eventos.json" -o anterior.json || echo '{}' > anterior.json
+          curl -fsSL "$SITE/data/eventos-teste.json" -o anterior-teste.json || echo '{}' > anterior-teste.json
+
+          echo "::group::pptx/ (site)"
+          python automacao/gerar_dados.py --pptx pptx --manual data/manual.json \
+            --anterior anterior.json --saida _site/data/eventos.json
+          echo "::endgroup::"
+
+          echo "::group::pptx-teste/ (site com ?fonte=teste)"
+          python automacao/gerar_dados.py --pptx pptx-teste \
+            --anterior anterior-teste.json --saida _site/data/eventos-teste.json
+          echo "::endgroup::"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  publicar:
+    needs: gerar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

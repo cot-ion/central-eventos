@@ -1,4 +1,4 @@
-import { carregarDados, praca, parseSinal, origem } from "./data.js";
+import { carregarDados, praca, parseSinal, origem, FONTE_TESTE } from "./data.js";
 import { buildIndex, search, highlight } from "./search.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -330,17 +330,31 @@ function dataHora(iso) {
   return iso ? new Date(iso).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "—";
 }
 
+function avisoToken(sinc) {
+  if (!sinc?.token_expira_em) return "";
+  const dias = Math.floor((new Date(sinc.token_expira_em) - Date.now()) / 86400000);
+  if (Number.isNaN(dias) || dias > 30) return "";
+  const quando = dias < 0 ? "<strong>venceu</strong>" : `vence em <strong>${dias} dia(s)</strong>`;
+  return `<p class="status-alerta">O token das baias ${quando} (${esc(dataHora(sinc.token_expira_em))}).
+    Gere um novo e rode o instalar.bat nas baias — ver baias/README.md.</p>`;
+}
+
 function renderStatus() {
   document.title = "Status da sincronização — Central de Eventos";
   const arquivos = Object.entries(DADOS.arquivos ?? {});
   const comProblema = arquivos.filter(([, a]) => a.erro || a.avisos?.length).length;
+  const sinc = DADOS.sincronizacao ?? {};
   el.evento.innerHTML = `
     <nav class="crumbs"><a href="#/" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>Buscar modelos</a></nav>
     <header class="ev-head">
       <h1>Status da sincronização</h1>
-      <p class="muted">Modelos lidos automaticamente dos .pptx da pasta do SharePoint.</p>
+      <p class="muted">Modelos lidos automaticamente dos .pptx da pasta do SharePoint${FONTE_TESTE ? " (pasta de TESTE)" : ""}.</p>
+      ${avisoToken(sinc)}
       <dl class="ev-facts">
-        <div><dt>Última publicação</dt><dd>${esc(dataHora(DADOS.gerado_em))}</dd></div>
+        <div><dt>Site gerado</dt><dd>${esc(dataHora(DADOS.gerado_em))}</dd></div>
+        ${sinc.atualizado_em ? `<div><dt>Último envio</dt><dd>${esc(dataHora(sinc.atualizado_em))}</dd></div>` : ""}
+        ${sinc.atualizado_por ? `<div><dt>Pela baia</dt><dd>${esc(sinc.atualizado_por)}</dd></div>` : ""}
+        ${sinc.token_expira_em ? `<div><dt>Token vence</dt><dd>${esc(dataHora(sinc.token_expira_em))}</dd></div>` : ""}
         <div><dt>Arquivos</dt><dd>${arquivos.length}</dd></div>
         <div><dt>Modelos</dt><dd>${EVENTOS.length}</dd></div>
         <div><dt>Com avisos</dt><dd>${comProblema}</dd></div>
@@ -354,7 +368,9 @@ function renderStatus() {
             ${a.manual ? '<span class="tag warn">importação manual</span>' : ""}
             ${a.erro ? '<span class="tag danger">erro</span>' : ""}
           </header>
-          <p class="muted">${a.eventos ?? 0} modelo(s)${a.processado_em ? ` · lido em ${esc(dataHora(a.processado_em))}` : ""}${
+          <p class="muted">${a.eventos ?? 0} modelo(s)${a.enviado_em ? ` · enviado em ${esc(dataHora(a.enviado_em))}` : ""}${
+            a.enviado_por ? ` por ${esc(a.enviado_por)}` : ""
+          }${
             a.sha256 ? ` · <code title="SHA-256">${esc(a.sha256.slice(0, 12))}</code>` : ""
           }</p>
           ${a.descricao ? `<p>${esc(a.descricao)}</p>` : ""}
@@ -385,7 +401,7 @@ function route() {
     renderEvento(m[1], lastQuerySinais);
     window.scrollTo(0, 0);
   } else if (!location.hash.startsWith("#sec-")) {
-    document.title = "Central de Eventos";
+    document.title = (FONTE_TESTE ? "TESTE — " : "") + "Central de Eventos";
     el.evento.hidden = true;
     el.home.hidden = false;
     lastQuerySinais = [];
@@ -557,6 +573,7 @@ async function iniciar() {
     EVENTOS = dados.eventos;
     ANOTACOES = dados.anotacoes ?? [];
     index = buildIndex(EVENTOS);
+    if (FONTE_TESTE) $("#banner-teste").hidden = false;
     if (dados.gerado_em) {
       $("#atualizado").textContent = `Atualizado em ${dataHora(dados.gerado_em)} · `;
     }

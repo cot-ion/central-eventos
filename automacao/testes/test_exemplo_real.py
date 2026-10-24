@@ -20,7 +20,7 @@ EXEMPLO = Path(__file__).parent / "exemplos" / "ION x SP - 6SP controle ION.pptx
 
 
 def manual(id_):
-    dados = json.loads((AUTOMACAO.parent / "data" / "eventos.json").read_text(encoding="utf-8"))
+    dados = json.loads((AUTOMACAO.parent / "data" / "manual.json").read_text(encoding="utf-8"))
     return next(e for e in dados["eventos"] if e["id"] == id_)
 
 

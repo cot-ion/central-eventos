@@ -1,6 +1,5 @@
 {
   "versao": 1,
-  "gerado_em": null,
   "arquivos": {
     "INFOGRAFICO_PRODUCOES_COT_2025.pdf": {
       "manual": true,
@@ -3822,5 +3821,6 @@
         "slide": 19
       }
     }
-  ]
+  ],
+  "descricao": "Modelos transcritos à mão do PDF do infográfico. O site final (data/eventos.json) é gerado pelo GitHub Actions juntando este arquivo com os .pptx de pptx/."
 }
