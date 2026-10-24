@@ -29,7 +29,8 @@ Copie o token (`github_pat_...`). Ele só aparece uma vez.
 1. Copie a pasta `baias/` do repositório.
 2. Copie `config.example.json` para **`config.json`** (na mesma pasta) e edite:
    - `"token"`: cole o token;
-   - `"pasta"`: nome da pasta do SharePoint (`CONV-19` para testes, depois `BBB26`);
+   - `"pasta"`: nome da pasta do SharePoint — já vem `Central de Eventos`
+     (em cada baia ela é achada em `C:\Users\<usuário>\Globo Comunicação e Participações sa\COT ION - ...\Central de Eventos`);
    - `"destino"`: `pptx-teste` para testes, depois `pptx` (o site de verdade).
 
 O `config.json` tem o token em texto puro: não mande por e-mail ou chat, e não
@@ -83,12 +84,12 @@ Se o token vencer antes, nada quebra no site: as baias só param de publicar
 
 ## Sequência de testes recomendada
 
-1. `config.json` com `"pasta": "CONV-19"` e `"destino": "pptx-teste"` → `instalar.bat`.
+1. `config.json` com `"destino": "pptx-teste"` (o padrão) → `instalar.bat`.
    Confira o teste sem publicar no fim da instalação.
 2. `schtasks /Run /TN CentralEventos` → em ~2 min, abra o site com
    **`?fonte=teste`** no fim do endereço (faixa amarela "TESTE").
    O site normal não muda.
-3. Tudo certo: troque para `"pasta": "BBB26"` e `"destino": "pptx"` e rode o
+3. Tudo certo: troque para `"destino": "pptx"` e rode o
    `instalar.bat` nas 11 baias.
 
 ## Problemas comuns

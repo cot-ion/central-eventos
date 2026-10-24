@@ -1,6 +1,6 @@
 {
-  "pasta": "CONV-19",
-  "caminho_contem": "",
+  "pasta": "Central de Eventos",
+  "caminho_contem": "COT ION",
   "profundidade_busca": 4,
   "repo": "cot-ion/central-eventos",
   "branch": "main",
