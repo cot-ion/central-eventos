@@ -369,6 +369,7 @@ mark {
   flex: none;
 }
 .tag {
+  white-space: nowrap;
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
@@ -563,6 +564,49 @@ mark {
   margin: 0;
   padding-left: 18px;
   columns: 2 260px;
+}
+
+.updated {
+  margin: 18px 0 0;
+  text-align: center;
+  font-size: 12px;
+}
+
+.status-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+.status-item {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid #34d399;
+  border-radius: 12px;
+  background: var(--surface);
+}
+.status-item.aviso {
+  border-left-color: var(--warn);
+}
+.status-item.erro {
+  border-left-color: var(--danger);
+}
+.status-item header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.status-item p,
+.status-item ul {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+.status-item ul {
+  padding-left: 18px;
+  color: var(--muted);
+}
+.status-erro {
+  color: var(--danger);
 }
 
 /* ======================================================= EVENT PAGE === */
