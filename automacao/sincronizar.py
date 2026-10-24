@@ -35,6 +35,7 @@ import time
 from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
+sys.path.insert(0, str(AQUI))  # garante "import extrator" mesmo com python -I
 REPO = AQUI.parent
 ARQ_DADOS = Path("data") / "eventos.json"
 TRAVA = AQUI / ".sincronizar.lock"
