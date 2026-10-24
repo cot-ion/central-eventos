@@ -33,7 +33,7 @@ Copie o token (`github_pat_...`). Ele só aparece uma vez.
    - `"token"`: cole o token;
    - `"pasta"`: nome da pasta do SharePoint — já vem `Central de Eventos`
      (em cada baia ela é achada em `C:\Users\<usuário>\Globo Comunicação e Participações sa\COT ION - ...\Central de Eventos`);
-   - `"destino"`: `pptx-teste` para testes, depois `pptx` (o site de verdade).
+   - `"destino"`: `pptx` (o site de verdade) — ou `pptx-teste` para testar sem mexer no site.
 
 O `config.json` tem o token em texto puro: não mande por e-mail ou chat, e não
 coloque no repositório (o `.gitignore` já impede).
@@ -47,6 +47,7 @@ coloque no repositório (o `.gitignore` já impede).
 | `espelhar_remocoes` | `true`: arquivo apagado da pasta sai do site também. |
 | `limite_remocao_pct` | Não remove se sumir mais que isso de uma vez (OneDrive desconectado?). |
 | `tamanho_maximo_mb` | Arquivos maiores são ignorados (o GitHub recusa acima de 100 MB). |
+| `enxugar` | `true` (padrão): envia uma cópia do .pptx com as fotos/vídeos trocados por 1 pixel. O site só usa o desenho dos slides, e o envio cai de dezenas de MB para centenas de KB. O arquivo na pasta não é alterado. |
 | `ocultar_com_vbs` | `true` usa o `executar-oculto.vbs` para não piscar janela. Só funciona se o antivírus permitir (o Kaspersky da empresa bloqueia). Padrão: `false`. |
 
 ## 3. Instalar numa baia
@@ -87,7 +88,7 @@ Se o token vencer antes, nada quebra no site: as baias só param de publicar
 
 ## Sequência de testes recomendada
 
-1. `config.json` com `"destino": "pptx-teste"` (o padrão) → `instalar.bat`.
+1. `config.json` com `"destino": "pptx-teste"` → `instalar.bat`.
    Confira o teste sem publicar no fim da instalação.
 2. `schtasks /Run /TN CentralEventos` → em ~2 min, abra o site com
    **`?fonte=teste`** no fim do endereço (faixa amarela "TESTE").

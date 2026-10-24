@@ -4,10 +4,11 @@
   "profundidade_busca": 4,
   "repo": "cot-ion/central-eventos",
   "branch": "main",
-  "destino": "pptx-teste",
+  "destino": "pptx",
   "intervalo_minutos": 15,
   "espelhar_remocoes": true,
   "limite_remocao_pct": 50,
   "tamanho_maximo_mb": 50,
+  "enxugar": true,
   "token": "COLE_AQUI_O_TOKEN"
 }

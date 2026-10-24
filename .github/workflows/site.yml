@@ -46,7 +46,8 @@ jobs:
           curl -fsSL "$SITE/data/eventos-teste.json" -o anterior-teste.json || echo '{}' > anterior-teste.json
 
           echo "::group::pptx/ (site)"
-          python automacao/gerar_dados.py --pptx pptx --manual data/manual.json \
+          # A transcrição manual do PDF só entra enquanto pptx/ estiver vazia.
+          python automacao/gerar_dados.py --pptx pptx --manual data/manual.json --manual-so-sem-pptx \
             --anterior anterior.json --saida _site/data/eventos.json
           echo "::endgroup::"
 
