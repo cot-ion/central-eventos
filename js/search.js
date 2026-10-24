@@ -1,4 +1,4 @@
-import { PRACAS, parseSinal } from "./data.js";
+import { praca as pracaInfo, parseSinal, origem } from "./data.js";
 
 /** Minúsculas, sem acentos, espaços normalizados. */
 export function normalize(text) {
@@ -40,9 +40,9 @@ function sinaisDe(evento) {
  * Peso maior = o campo diz mais sobre "qual evento é este".
  */
 export function buildIndex(eventos) {
-  return eventos.map((ev) => {
-    const praca = PRACAS[ev.praca];
-    const nos = [...(ev.video?.nos ?? []), ...(ev.audio?.nos ?? [])].map((n) => n.replace(/^[~!^]+/, ""));
+  return eventos.map((ev, ordem) => {
+    const praca = pracaInfo(ev.praca);
+    const nos = [...(ev.video?.nos ?? []), ...(ev.audio?.nos ?? [])].map((n) => parseSinal(n).nome);
     const sinais = sinaisDe(ev);
     const campos = [
       { peso: 6, rotulo: "nome", texto: ev.nome },
@@ -54,7 +54,7 @@ export function buildIndex(eventos) {
       { peso: 3, rotulo: "apelido", texto: (ev.apelidos ?? []).join(" · ") },
       { peso: 2, rotulo: "bloco", texto: [...new Set(nos)].join(" · ") },
       { peso: 2, rotulo: "station", texto: ev.station ?? "" },
-      { peso: 1, rotulo: "página", texto: `pagina ${ev.pagina} p${ev.pagina}` },
+      { peso: 1, rotulo: "origem", texto: `${origem(ev).longa} ${ev.fonte?.arquivo ?? ""}` },
       ...(ev.emConstrucao ? [{ peso: 2, rotulo: "status", texto: "em construção" }] : []),
       ...sinais.map((s) => ({
         peso: 1.5,
@@ -67,7 +67,7 @@ export function buildIndex(eventos) {
         { peso: 0.5, rotulo: "canais", texto: `${g.titulo}: ${g.canais.filter(Boolean).join(", ")}` },
       ]),
     ].map((c) => ({ ...c, norm: normalize(c.texto) }));
-    return { evento: ev, campos };
+    return { evento: ev, ordem, campos };
   });
 }
 
@@ -94,7 +94,7 @@ function matchScore(norm, token) {
 export function search(index, query, { praca } = {}) {
   const ts = tokens(query);
   const pool = praca ? index.filter((i) => i.evento.praca === praca) : index;
-  if (!ts.length) return pool.map((i) => ({ evento: i.evento, score: 0, contexto: null, sinais: [] }));
+  if (!ts.length) return pool.map((i) => ({ evento: i.evento, ordem: i.ordem, score: 0, contexto: null, sinais: [] }));
 
   const results = [];
   for (const item of pool) {
@@ -127,13 +127,14 @@ export function search(index, query, { praca } = {}) {
       if (melhorCobertura === ts.length) total += 3; // todos os termos no mesmo campo
       results.push({
         evento: item.evento,
+        ordem: item.ordem,
         score: total,
         contexto: melhorContexto ? { rotulo: melhorContexto.rotulo, texto: melhorContexto.texto } : null,
         sinais: [...sinais],
       });
     }
   }
-  return results.sort((a, b) => b.score - a.score || a.evento.pagina - b.evento.pagina);
+  return results.sort((a, b) => b.score - a.score || a.ordem - b.ordem);
 }
 
 /** Envolve os termos buscados em <mark>, preservando o texto original. */

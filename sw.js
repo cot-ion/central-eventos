@@ -1,6 +1,6 @@
 // Service worker: deixa o app abrindo offline depois da primeira visita.
 // Ao alterar arquivos do app, incremente VERSION para forçar a atualização.
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = `central-eventos-${VERSION}`;
 
 const SHELL = [
@@ -10,6 +10,7 @@ const SHELL = [
   "js/app.js",
   "js/data.js",
   "js/search.js",
+  "data/eventos.json",
   "manifest.webmanifest",
   "assets/icons/icon-192.png",
   "assets/icons/icon-512.png",

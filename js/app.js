@@ -1,11 +1,14 @@
-import { EVENTOS, PRACAS, ANOTACOES, parseSinal } from "./data.js";
+import { carregarDados, praca, parseSinal, origem } from "./data.js";
 import { buildIndex, search, highlight } from "./search.js";
 
 const $ = (sel, root = document) => root.querySelector(sel);
 const esc = (s) =>
   String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 
-const index = buildIndex(EVENTOS);
+let DADOS = {};
+let EVENTOS = [];
+let ANOTACOES = [];
+let index = [];
 const state = { query: "", praca: null, active: -1, homeScroll: 0 };
 
 const el = {
@@ -26,7 +29,7 @@ const el = {
 /* ---------------------------------------------------------------- HOME --- */
 
 function pracaBadge(sigla) {
-  const p = PRACAS[sigla];
+  const p = praca(sigla);
   return `<span class="praca" style="--praca:${p?.cor ?? "#64748b"}" title="${esc(p?.nome ?? sigla)}">${esc(sigla)}</span>`;
 }
 
@@ -40,7 +43,7 @@ function contagemSinais(ev) {
 
 function miniFlow(nos) {
   return `<p class="mini-flow" aria-label="Fluxo de vídeo">${nos
-    .map((n) => `<span>${esc(n.replace(/^[~!^]+/, ""))}</span>`)
+    .map((n) => `<span>${esc(parseSinal(n).nome)}</span>`)
     .join('<i aria-hidden="true">→</i>')}</p>`;
 }
 
@@ -49,15 +52,15 @@ function renderChips() {
   for (const ev of EVENTOS) contagem[ev.praca] = (contagem[ev.praca] ?? 0) + 1;
   const chip = (sigla, label, n) => {
     const on = state.praca === sigla;
-    const cor = sigla ? PRACAS[sigla].cor : "var(--accent)";
+    const cor = sigla ? praca(sigla).cor : "var(--accent)";
     return `<button type="button" class="chip${on ? " on" : ""}" data-praca="${sigla ?? ""}" aria-pressed="${on}" style="--praca:${cor}">
       ${esc(label)}<span>${n}</span></button>`;
   };
   el.chips.innerHTML =
     chip(null, "Todas", EVENTOS.length) +
-    Object.entries(PRACAS)
-      .filter(([s]) => contagem[s])
-      .map(([s, p]) => chip(s, s, contagem[s]))
+    Object.keys(contagem)
+      .filter(Boolean)
+      .map((s) => chip(s, s, contagem[s]))
       .join("");
 }
 
@@ -67,7 +70,7 @@ function renderCards() {
   el.resultsTitle.textContent = q
     ? `Resultados para “${q}”`
     : state.praca
-      ? `Modelos — ${PRACAS[state.praca].nome}`
+      ? `Modelos — ${praca(state.praca).nome || state.praca}`
       : "Todos os modelos";
   el.resultsCount.textContent = `${res.length} ${res.length === 1 ? "modelo" : "modelos"}`;
 
@@ -82,10 +85,10 @@ function renderCards() {
   el.results.innerHTML = res
     .map(({ evento: ev, contexto }) => {
       const n = contagemSinais(ev);
-      return `<a class="card" href="#/evento/${ev.id}" style="--praca:${PRACAS[ev.praca]?.cor}">
+      return `<a class="card" href="#/evento/${ev.id}" style="--praca:${praca(ev.praca).cor}">
         <div class="card-top">
           ${pracaBadge(ev.praca)}
-          <span class="card-page">Pág. ${ev.pagina}</span>
+          <span class="card-page">${esc(origem(ev).curta)}</span>
           ${ev.emConstrucao ? '<span class="tag warn">Em construção</span>' : ""}
         </div>
         <h3>${highlight(ev.nome, q, esc)}</h3>
@@ -94,7 +97,7 @@ function renderCards() {
           <div><dt>Estúdio</dt><dd>${highlight(ev.estudio, q, esc)}</dd></div>
           <div><dt>Controle</dt><dd>${highlight(ev.controle, q, esc)}</dd></div>
         </dl>
-        ${miniFlow(ev.video.nos)}
+        ${ev.video?.nos?.length ? miniFlow(ev.video.nos) : ""}
         ${contexto ? `<p class="card-ctx"><span>${esc(contexto.rotulo)}</span> ${highlight(contexto.texto, q, esc)}</p>` : ""}
         <div class="card-foot">
           <span><b>${n.video}</b> sinais de vídeo</span>
@@ -148,6 +151,7 @@ function openEvento(id) {
 }
 
 function renderNotes() {
+  el.notes.hidden = !ANOTACOES.length;
   el.notes.innerHTML = `<h2>Anotações</h2><ul>${ANOTACOES.map((a) => `<li>${esc(a)}</li>`).join("")}</ul>`;
 }
 
@@ -227,7 +231,7 @@ function renderEvento(id, querySinais = []) {
     return;
   }
   document.title = `${ev.nome} — Central de Eventos`;
-  const p = PRACAS[ev.praca];
+  const p = praca(ev.praca);
   const idx = EVENTOS.indexOf(ev);
   const prev = EVENTOS[idx - 1];
   const next = EVENTOS[idx + 1];
@@ -241,7 +245,7 @@ function renderEvento(id, querySinais = []) {
       <div class="ev-head-top">
         ${pracaBadge(ev.praca)}
         <span class="muted">${esc(p?.nome ?? "")}</span>
-        <span class="card-page">Página ${ev.pagina} do infográfico</span>
+        <span class="card-page" title="Arquivo de origem">${esc(origem(ev).longa)}</span>
         ${ev.emConstrucao ? '<span class="tag warn">Em construção</span>' : ""}
       </div>
       <h1>${esc(ev.nome)}</h1>
@@ -253,10 +257,10 @@ function renderEvento(id, querySinais = []) {
         ${ev.station ? `<div><dt>Station</dt><dd>${esc(ev.station)}</dd></div>` : ""}
       </dl>
       <div class="ev-actions">
-        <button type="button" class="btn" data-original="${ev.pagina}">
+        ${ev.imagem ? `<button type="button" class="btn" data-original="${esc(ev.id)}">
           <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 16 5-5 4 4 3-3 6 6" /></svg>
           Ver diagrama original
-        </button>
+        </button>` : ""}
         <button type="button" class="btn ghost" data-share>
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></svg>
           Copiar link
@@ -265,8 +269,8 @@ function renderEvento(id, querySinais = []) {
     </header>
 
     <nav class="ev-tabs" aria-label="Seções">
-      <a href="#sec-video" data-sec="sec-video">Vídeo</a>
-      <a href="#sec-audio" data-sec="sec-audio">Áudio</a>
+      ${ev.video?.nos?.length ? '<a href="#sec-video" data-sec="sec-video">Vídeo</a>' : ""}
+      ${ev.audio?.nos?.length ? '<a href="#sec-audio" data-sec="sec-audio">Áudio</a>' : ""}
       ${ev.canais?.length ? '<a href="#sec-canais" data-sec="sec-canais">Canais</a>' : ""}
     </nav>
 
@@ -278,15 +282,17 @@ function renderEvento(id, querySinais = []) {
       <span class="lg-tip">Toque num sinal para rastreá-lo no fluxo.</span>
     </div>
 
-    <section class="ev-sec" id="sec-video">
-      <h2><span class="sec-ico video"></span>Vídeo</h2>
-      ${renderFluxo(ev.video, "video")}
-    </section>
+    ${
+      ev.video?.nos?.length
+        ? `<section class="ev-sec" id="sec-video"><h2><span class="sec-ico video"></span>Vídeo</h2>${renderFluxo(ev.video, "video")}</section>`
+        : ""
+    }
 
-    <section class="ev-sec" id="sec-audio">
-      <h2><span class="sec-ico audio"></span>Áudio</h2>
-      ${renderFluxo(ev.audio, "audio")}
-    </section>
+    ${
+      ev.audio?.nos?.length
+        ? `<section class="ev-sec" id="sec-audio"><h2><span class="sec-ico audio"></span>Áudio</h2>${renderFluxo(ev.audio, "audio")}</section>`
+        : ""
+    }
 
     ${
       ev.canais?.length
@@ -318,13 +324,61 @@ function setTrace(nomes) {
   });
 }
 
+/* -------------------------------------------------------------- STATUS --- */
+
+function dataHora(iso) {
+  return iso ? new Date(iso).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" }) : "—";
+}
+
+function renderStatus() {
+  document.title = "Status da sincronização — Central de Eventos";
+  const arquivos = Object.entries(DADOS.arquivos ?? {});
+  const comProblema = arquivos.filter(([, a]) => a.erro || a.avisos?.length).length;
+  el.evento.innerHTML = `
+    <nav class="crumbs"><a href="#/" class="back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" /></svg>Buscar modelos</a></nav>
+    <header class="ev-head">
+      <h1>Status da sincronização</h1>
+      <p class="muted">Modelos lidos automaticamente dos .pptx da pasta do SharePoint.</p>
+      <dl class="ev-facts">
+        <div><dt>Última publicação</dt><dd>${esc(dataHora(DADOS.gerado_em))}</dd></div>
+        <div><dt>Arquivos</dt><dd>${arquivos.length}</dd></div>
+        <div><dt>Modelos</dt><dd>${EVENTOS.length}</dd></div>
+        <div><dt>Com avisos</dt><dd>${comProblema}</dd></div>
+      </dl>
+    </header>
+    <div class="status-list">${arquivos
+      .map(
+        ([nome, a]) => `<article class="status-item${a.erro ? " erro" : a.avisos?.length ? " aviso" : ""}">
+          <header>
+            <strong>${esc(nome)}</strong>
+            ${a.manual ? '<span class="tag warn">importação manual</span>' : ""}
+            ${a.erro ? '<span class="tag danger">erro</span>' : ""}
+          </header>
+          <p class="muted">${a.eventos ?? 0} modelo(s)${a.processado_em ? ` · lido em ${esc(dataHora(a.processado_em))}` : ""}${
+            a.sha256 ? ` · <code title="SHA-256">${esc(a.sha256.slice(0, 12))}</code>` : ""
+          }</p>
+          ${a.descricao ? `<p>${esc(a.descricao)}</p>` : ""}
+          ${a.erro ? `<p class="status-erro">${esc(a.erro)} — a versão anterior foi mantida.</p>` : ""}
+          ${a.avisos?.length ? `<ul>${a.avisos.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+          ${a.ignorados?.length ? `<p class="muted">Slides que não são modelos (ignorados): ${esc(a.ignorados.join("; "))}</p>` : ""}
+        </article>`
+      )
+      .join("")}</div>`;
+}
+
 /* -------------------------------------------------------------- ROUTER --- */
 
 let lastQuerySinais = [];
 
 function route() {
   const m = location.hash.match(/^#\/evento\/([\w-]+)/);
-  if (m) {
+  if (location.hash === "#/status") {
+    if (!el.home.hidden) state.homeScroll = window.scrollY;
+    el.home.hidden = true;
+    el.evento.hidden = false;
+    renderStatus();
+    window.scrollTo(0, 0);
+  } else if (m) {
     if (!el.home.hidden) state.homeScroll = window.scrollY;
     el.home.hidden = true;
     el.evento.hidden = false;
@@ -431,7 +485,7 @@ el.evento.addEventListener("click", async (e) => {
     return;
   }
   const orig = e.target.closest("[data-original]");
-  if (orig) return openOriginal(Number(orig.dataset.original));
+  if (orig) return openOriginal(orig.dataset.original);
   if (e.target.closest("[data-share]")) {
     try {
       await navigator.clipboard.writeText(location.href);
@@ -444,12 +498,13 @@ el.evento.addEventListener("click", async (e) => {
 
 /* ------------------------------------------------------ ORIGINAL (PDF) --- */
 
-function openOriginal(pagina) {
-  const ev = EVENTOS.find((x) => x.pagina === pagina);
+function openOriginal(id) {
+  const ev = EVENTOS.find((x) => x.id === id);
+  if (!ev?.imagem) return;
   const img = $("#original-img");
-  img.src = `assets/originais/p-${String(pagina).padStart(2, "0")}.jpg`;
-  img.alt = `Página ${pagina} do infográfico original`;
-  $("#original-title").textContent = `${ev?.titulo ?? ""} — página ${pagina}`;
+  img.src = ev.imagem;
+  img.alt = `${ev.titulo} — ${origem(ev).longa}`;
+  $("#original-title").textContent = `${ev.titulo} — ${origem(ev).curta}`;
   el.dialog.classList.remove("zoom");
   $("#original-zoom").textContent = "Ampliar";
   el.dialog.showModal();
@@ -495,7 +550,26 @@ if ("serviceWorker" in navigator && location.protocol !== "file:") {
 
 window.addEventListener("hashchange", route);
 
-renderChips();
-renderCards();
-renderNotes();
-route();
+async function iniciar() {
+  try {
+    const dados = await carregarDados();
+    DADOS = dados;
+    EVENTOS = dados.eventos;
+    ANOTACOES = dados.anotacoes ?? [];
+    index = buildIndex(EVENTOS);
+    if (dados.gerado_em) {
+      $("#atualizado").textContent = `Atualizado em ${dataHora(dados.gerado_em)} · `;
+    }
+  } catch (err) {
+    console.error(err);
+    el.results.innerHTML = `<div class="empty"><strong>Não foi possível carregar os modelos.</strong>
+      <p>Verifique a conexão e recarregue a página.</p></div>`;
+    return;
+  }
+  renderChips();
+  renderCards();
+  renderNotes();
+  route();
+}
+
+iniciar();

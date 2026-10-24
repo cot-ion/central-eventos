@@ -1,0 +1,10 @@
+# automação — arquivos locais da máquina que roda a sincronização
+automacao/config.ini
+automacao/logs/
+automacao/.venv/
+automacao/.sincronizar.lock
+*.inspecao.json
+__pycache__/
+*.pyc
+data/*.json.tmp
+automacao/teste_conexao_resultado.txt

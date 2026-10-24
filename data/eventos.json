@@ -1,0 +1,3826 @@
+{
+  "versao": 1,
+  "gerado_em": null,
+  "arquivos": {
+    "INFOGRAFICO_PRODUCOES_COT_2025.pdf": {
+      "manual": true,
+      "descricao": "Importação manual do infográfico em PDF (out/2026). Removida automaticamente se manter_eventos_manuais = nao.",
+      "eventos": 19,
+      "anotacoes": [
+        "Estúdio J — backstage / eliminação",
+        "Ctl web — Angélica / live show",
+        "Ctl MG2 — Domingão ao vivo",
+        "Ctl MG3 — Porchat ao vivo"
+      ]
+    }
+  },
+  "anotacoes": [
+    "Estúdio J — backstage / eliminação",
+    "Ctl web — Angélica / live show",
+    "Ctl MG2 — Domingão ao vivo",
+    "Ctl MG3 — Porchat ao vivo"
+  ],
+  "eventos": [
+    {
+      "id": "ion-sp-6sp",
+      "titulo": "ION x SP",
+      "nome": "SP · Estúdio 6 SP com controle ION",
+      "praca": "SP",
+      "estudio": "6 SP",
+      "controle": "ION",
+      "apelidos": [
+        "câmeras sp",
+        "narração sp"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIBE"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1",
+                "via": "PR RX SP-1"
+              },
+              {
+                "nome": "CAMERA 2",
+                "via": "PR RX SP-2"
+              },
+              {
+                "nome": "CAMERA 3",
+                "via": "PR RX SP-3"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO TIT",
+                "via": "PR TX LAWO E DR LAWO"
+              },
+              {
+                "nome": "AUX TELÃO",
+                "via": "PR TX LAWO E DR LAWO"
+              },
+              {
+                "nome": "PGM COM CTL",
+                "via": "PR TX LAWO E DR LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1"
+              },
+              {
+                "nome": "CAMERA 2"
+              },
+              {
+                "nome": "CAMERA 3"
+              },
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "+ASS SP",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+CAM SP",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "REMOTE"
+              },
+              {
+                "nome": "OVER",
+                "via": "IFB EVNT"
+              },
+              {
+                "nome": "+CAM SP"
+              },
+              {
+                "nome": "+ASS SP"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "AUX AUD"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "Câmeras 1, 2 e 3 SP",
+          "canais": [
+            "LAPELA NARRA",
+            "LAPELA COMENTA",
+            "MD NARRA",
+            "MD COMENTA"
+          ]
+        },
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-01.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 1
+      }
+    },
+    {
+      "id": "ion-sp-cabine",
+      "titulo": "ION x SP",
+      "nome": "SP · Cabine SP com controle ION",
+      "praca": "SP",
+      "estudio": "CAB SP",
+      "controle": "ION",
+      "apelidos": [
+        "cabine",
+        "locução sp"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIBE"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT",
+                "via": "LAWO"
+              },
+              {
+                "nome": "CABINE BY",
+                "via": "LAWO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "LAWO"
+              },
+              {
+                "nome": "PGM COM CTL",
+                "via": "LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              },
+              {
+                "nome": "CABINE TIT"
+              },
+              {
+                "nome": "CABINE BY"
+              }
+            ],
+            "volta": []
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT",
+                "riscado": true
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "+CAB SP",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "REMOTE",
+                "riscado": true
+              },
+              {
+                "nome": "OVER",
+                "via": "IFB EVNT"
+              },
+              {
+                "nome": "+CAB SP"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "AUX AUD"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "Cabine TIT",
+          "canais": [
+            "LAPELA + MD NARRA",
+            "LAPELA + MD COMENTA",
+            "",
+            ""
+          ]
+        },
+        {
+          "titulo": "Cabine BY",
+          "destaque": true,
+          "canais": [
+            "MIX MD NARRA / COMENTA",
+            "MIX MD NARRA / COMENTA",
+            "",
+            ""
+          ]
+        },
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-02.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 2
+      }
+    },
+    {
+      "id": "ion-sp-6sp-ctl-2sp",
+      "titulo": "ION x SP",
+      "nome": "SP · Estúdio 6 SP com controle 2 SP",
+      "praca": "SP",
+      "estudio": "6 SP",
+      "controle": "2 SP",
+      "apelidos": [
+        "controle sp",
+        "pgm sem sono"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "CTL SP"
+          },
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIBE"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT"
+              },
+              {
+                "nome": "PGM BY"
+              },
+              {
+                "nome": "PGM SEM SONO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT",
+                "via": "LAWO"
+              },
+              {
+                "nome": "PGM BY",
+                "via": "LAWO"
+              },
+              {
+                "nome": "PGM SEM SONO",
+                "via": "LAWO"
+              },
+              {
+                "nome": "PGM TIT VIA DR",
+                "via": "NIMBRA DR LAWO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PROC PGM TIT",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PROC PGM BY",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PROC PGM VIA DR",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "CTL SP"
+          },
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIBE"
+          }
+        ],
+        "links": [
+          {
+            "ida": [],
+            "volta": [
+              {
+                "nome": "+MST SP"
+              },
+              {
+                "nome": "+CRD SP"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "+MST SP",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+CRD SP",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": []
+          },
+          {
+            "ida": [
+              {
+                "nome": "+MST SP"
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM TIT",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM BY",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Sem sono",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-03.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 3
+      }
+    },
+    {
+      "id": "ion-sp-pc5-ctl-2sp",
+      "titulo": "ION x SP",
+      "nome": "SP · Estúdio PC5/CAB com controle 2 SP",
+      "praca": "SP",
+      "estudio": "PC5/CAB",
+      "controle": "2 SP",
+      "apelidos": [
+        "poncap 5",
+        "cabine ion",
+        "cam est ion"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "CTL SP"
+          },
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIBE"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT"
+              },
+              {
+                "nome": "PGM BY"
+              },
+              {
+                "nome": "PGM SEM SONO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              },
+              {
+                "nome": "CAM EST ION"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT",
+                "via": "LAWO"
+              },
+              {
+                "nome": "PGM BY",
+                "via": "LAWO"
+              },
+              {
+                "nome": "PGM SEM SONO",
+                "via": "LAWO"
+              },
+              {
+                "nome": "PGM TIT VIA DR",
+                "via": "NIMBRA DR LAWO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO"
+              },
+              {
+                "nome": "CAM EST ION"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PROC PGM TIT",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PROC PGM BY",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PROC PGM VIA DR",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "CTL SP"
+          },
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIBE"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MINUS"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "+MST SP"
+              },
+              {
+                "nome": "+CRD SP"
+              },
+              {
+                "nome": "MIC BY"
+              },
+              {
+                "nome": "OVER"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "+MST SP",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+CRD SP",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "+MST SP"
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PONCAP 5",
+          "destaque": true,
+          "canais": [
+            "LAPELA NARRA",
+            "LAPELA COMENTA",
+            "MD NARRA",
+            "MD COMENTA"
+          ]
+        },
+        {
+          "titulo": "Cabine ION",
+          "destaque": true,
+          "canais": [
+            "LAPELA NARRA",
+            "LAPELA COMENTA",
+            "MD NARRA",
+            "MD COMENTA"
+          ]
+        },
+        {
+          "titulo": "PGM TIT",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM BY",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Sem sono",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-04.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 4
+      }
+    },
+    {
+      "id": "ion-bhe-on-tube",
+      "titulo": "ION x BHE",
+      "nome": "BHE · Estúdio BHE On Tube com controle ION",
+      "praca": "BHE",
+      "estudio": "BHE ON TUBE",
+      "controle": "ION",
+      "apelidos": [
+        "minas",
+        "bh",
+        "metrolan",
+        "tvu"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT BHE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "CABINE BY",
+                "via": "TVU"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "AUX TELÃO",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "CTL COM",
+                "via": "METROLAN"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT"
+              },
+              {
+                "nome": "CABINE BY"
+              },
+              {
+                "nome": "DIRETO TIT",
+                "via": "+ DELAY COERÊNCIA"
+              },
+              {
+                "nome": "DIRETO BY",
+                "via": "+ DELAY COERÊNCIA"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT BHE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT / ACCESS"
+              },
+              {
+                "nome": "ASS/DTV",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "DIRECT / ACCESS"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "REMOTE CONTROLE"
+              },
+              {
+                "nome": "OVER",
+                "via": "IFB"
+              },
+              {
+                "nome": "ASS/DTV",
+                "via": "IFB"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "Cabine TIT",
+          "canais": [
+            "LAPELA 1",
+            "LAPELA 2",
+            "LAPELA 3",
+            "MD 1",
+            "MD 2",
+            "MD 3",
+            "MIX MICs",
+            "OVER"
+          ]
+        },
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-05.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 5
+      }
+    },
+    {
+      "id": "ion-bhe-diamantina",
+      "titulo": "ION x BHE",
+      "nome": "BHE · Estúdio Diamantina com controle ION",
+      "praca": "BHE",
+      "estudio": "DIAMANTINA BHE",
+      "controle": "ION",
+      "apelidos": [
+        "minas",
+        "bh",
+        "diamantina",
+        "dtv camera"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT BHE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "CABINE BY",
+                "via": "TVU"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "CTL COM",
+                "via": "METROLAN"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT"
+              },
+              {
+                "nome": "CABINE BY"
+              },
+              {
+                "nome": "DIRETO TIT",
+                "via": "+ DELAY COERÊNCIA"
+              },
+              {
+                "nome": "DIRETO BY",
+                "via": "+ DELAY COERÊNCIA"
+              }
+            ],
+            "volta": []
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT BHE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT / ACCESS"
+              },
+              {
+                "nome": "AUDIO",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DTV/CAMERA",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "MINUS",
+                "via": "DIRECT / ACCESS"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "REMOTE CONTROLE"
+              },
+              {
+                "nome": "OVER",
+                "via": "IFB"
+              },
+              {
+                "nome": "AUDIO",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DTV/CAMERA",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "MINUS"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "Cabine TIT",
+          "canais": [
+            "LAPELA 1",
+            "LAPELA 2",
+            "LAPELA 3",
+            "MD 1",
+            "MD 2",
+            "MD 3",
+            "",
+            "OVER"
+          ]
+        },
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-06.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 6
+      }
+    },
+    {
+      "id": "ion-bhe-ctl-bhe",
+      "titulo": "ION x BHE",
+      "nome": "BHE · Estúdio BHE com controle BHE",
+      "praca": "BHE",
+      "estudio": "BHE",
+      "controle": "BHE",
+      "apelidos": [
+        "minas",
+        "bh",
+        "mestre",
+        "gol"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "CTL BHE"
+          },
+          {
+            "nome": "COT BHE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT"
+              },
+              {
+                "nome": "PGM BY"
+              },
+              {
+                "nome": "PGM SEM SONO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "PGM BY",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "PGM TIT VIA DR",
+                "via": "TVU"
+              },
+              {
+                "nome": "PGM SEM SONO",
+                "via": "METROLAN"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "METROLAN"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PROC PGM TIT",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PROC PGM BY",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PROC PGM VIA DR",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "CTL BHE"
+          },
+          {
+            "nome": "COT BHE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIBE"
+          }
+        ],
+        "links": [
+          {
+            "ida": [],
+            "volta": [
+              {
+                "nome": "MESTRE"
+              },
+              {
+                "nome": "CORD"
+              },
+              {
+                "nome": "GOL"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MESTRE",
+                "via": "SORT GROUP"
+              },
+              {
+                "nome": "CORD",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "GOL",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": []
+          },
+          {
+            "ida": [
+              {
+                "nome": "MESTRE",
+                "via": "IFB EVENTUAL"
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "",
+            "",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "MUX PROD",
+            "AMB MONO",
+            "MUX PROD",
+            "AMB MONO",
+            "MUX PROD",
+            "AMB MONO",
+            "MUX PROD",
+            "AMB MONO"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-07.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 7
+      }
+    },
+    {
+      "id": "ion-g3",
+      "titulo": "ION x G3",
+      "nome": "G3 · Estúdio PC5/CAB com controles externos",
+      "praca": "G3",
+      "estudio": "PC5/CAB",
+      "controle": "Controles externos",
+      "emConstrucao": true,
+      "apelidos": [
+        "poncap",
+        "cabine de locução",
+        "cam espia"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "CTL G3"
+          },
+          {
+            "nome": "COT G3"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "PC5/CAB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [],
+            "volta": [
+              {
+                "nome": "CAM PC5 ION"
+              },
+              {
+                "nome": "CAM ESPIA"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT"
+              },
+              {
+                "nome": "DIRETO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "CAM PC5 ION"
+              },
+              {
+                "nome": "CAM ESPIA"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT"
+              },
+              {
+                "nome": "DIRETO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "CAM PC5 ION"
+              },
+              {
+                "nome": "CAM ESPIA"
+              }
+            ]
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "CTL G3"
+          },
+          {
+            "nome": "COT G3"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "PC5/CAB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MINUS"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MIC BY"
+              },
+              {
+                "nome": "OVER"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MINUS"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MIC BY"
+              },
+              {
+                "nome": "OVER"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PONCAP 5",
+          "destaque": true,
+          "canais": [
+            "LAPELA NARRA",
+            "LAPELA COMENTA",
+            "MD NARRA",
+            "MD COMENTA"
+          ]
+        },
+        {
+          "titulo": "PONCAP 1-4",
+          "destaque": true,
+          "canais": [
+            "LAPELA NARRA",
+            "LAPELA COMENTA",
+            "MD NARRA",
+            "MD COMENTA"
+          ]
+        },
+        {
+          "titulo": "Cabine de locução",
+          "destaque": true,
+          "canais": [
+            "LAPELA NARRA",
+            "LAPELA COMENTA",
+            "MD NARRA",
+            "MD COMENTA"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-08.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 8
+      }
+    },
+    {
+      "id": "ion-rce",
+      "titulo": "ION x RCE",
+      "nome": "RCE · Estúdio RCE com controle ION",
+      "praca": "RCE",
+      "estudio": "RCE",
+      "controle": "ION",
+      "apelidos": [
+        "pernambuco",
+        "metrolan",
+        "tvu"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT RCE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "CABINE BY",
+                "via": "TVU"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "AUX TELÃO",
+                "via": "METROLAN/LAWO"
+              },
+              {
+                "nome": "CTL COM",
+                "via": "METROLAN/LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT"
+              },
+              {
+                "nome": "CABINE BY"
+              },
+              {
+                "nome": "DIRETO TIT",
+                "via": "+ DELAY COERÊNCIA"
+              },
+              {
+                "nome": "DIRETO BY",
+                "via": "+ DELAY COERÊNCIA"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO",
+                "via": "AUX CONTROLE"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT RCE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "DTV/CAMERA",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "DIRECT / ACCESS"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "REM CONTROLE"
+              },
+              {
+                "nome": "OVER",
+                "via": "IFB EVENT"
+              },
+              {
+                "nome": "DTV/CAMERA",
+                "via": "IFB"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "AUX CONTROLE"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "Cabine TIT",
+          "canais": [
+            "LAPELA 1",
+            "LAPELA 2",
+            "LAPELA 3",
+            "MD 1",
+            "MD 2",
+            "MD 3",
+            "MIX MICs",
+            "OVER"
+          ]
+        },
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-09.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 9
+      }
+    },
+    {
+      "id": "ion-rce-ponto-captacao",
+      "titulo": "ION x RCE",
+      "nome": "RCE · Ponto de captação com controle ION",
+      "praca": "RCE",
+      "estudio": "PONTO CAPTAÇÃO",
+      "controle": "ION",
+      "apelidos": [
+        "pernambuco",
+        "externa",
+        "metrolan"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT RCE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "CABINE BY",
+                "via": "TVU"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "AUX TELÃO",
+                "via": "METROLAN/LAWO"
+              },
+              {
+                "nome": "CTL COM",
+                "via": "METROLAN/LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CABINE TIT"
+              },
+              {
+                "nome": "CABINE BY"
+              },
+              {
+                "nome": "DIRETO TIT",
+                "via": "+ DELAY COERÊNCIA"
+              },
+              {
+                "nome": "DIRETO BY",
+                "via": "+ DELAY COERÊNCIA"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO",
+                "via": "AUX CONTROLE"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT RCE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "DTV/CAMERA",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "DIRECT / ACCESS"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "REM CONTROLE"
+              },
+              {
+                "nome": "OVER",
+                "via": "IFB EVENT"
+              },
+              {
+                "nome": "DTV/CAMERA",
+                "via": "IFB"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "AUX CONTROLE"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "Cabine TIT",
+          "canais": [
+            "LAPELA NARRA",
+            "LAPELA COMENTA",
+            "MD NARRA",
+            "MD COMENTA",
+            "",
+            "",
+            "",
+            "OVER"
+          ]
+        },
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-10.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 10
+      }
+    },
+    {
+      "id": "ion-rce-ctl-rce",
+      "titulo": "ION x RCE",
+      "nome": "RCE · Estúdio RCE com controle RCE",
+      "praca": "RCE",
+      "estudio": "RCE",
+      "controle": "RCE",
+      "apelidos": [
+        "pernambuco",
+        "mestre",
+        "metrolan via jb"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "CTL RCE"
+          },
+          {
+            "nome": "COT RCE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT"
+              },
+              {
+                "nome": "PGM BY"
+              },
+              {
+                "nome": "PGM SEM SONO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT",
+                "via": "METROLAN"
+              },
+              {
+                "nome": "PGM BY",
+                "via": "TVU"
+              },
+              {
+                "nome": "PGM SEM SONO",
+                "via": "METROLAN VIA JB"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "METROLAN"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PROC PGM TIT",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PROC PGM BY",
+                "via": "REM/PROC"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "CTL RCE"
+          },
+          {
+            "nome": "COT RCE"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIBE"
+          }
+        ],
+        "links": [
+          {
+            "ida": [],
+            "volta": [
+              {
+                "nome": "MESTRE"
+              },
+              {
+                "nome": "CORD"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MESTRE",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "CORD",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": []
+          },
+          {
+            "ida": [
+              {
+                "nome": "MESTRE",
+                "via": "IFB EVENTUAL"
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "",
+            ""
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-11.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 11
+      }
+    },
+    {
+      "id": "ion-jb-jungle-fight",
+      "titulo": "ION x JB (Jungle Fight)",
+      "nome": "JB · Jungle Fight com controle ION",
+      "praca": "JB",
+      "estudio": "JB",
+      "controle": "ION",
+      "apelidos": [
+        "jungle",
+        "mma",
+        "luta",
+        "rio"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT JB"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1",
+                "via": "PR RX 09"
+              },
+              {
+                "nome": "CAMERA 2",
+                "via": "PR RX"
+              },
+              {
+                "nome": "CAMERA 3",
+                "via": "PR RX"
+              },
+              {
+                "nome": "CAMERA 4",
+                "via": "PR RX"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO",
+                "via": "PR TX LAWO"
+              },
+              {
+                "nome": "PGM COM CTL",
+                "via": "PR TX LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1"
+              },
+              {
+                "nome": "CAMERA 2"
+              },
+              {
+                "nome": "CAMERA 3"
+              },
+              {
+                "nome": "CAMERA 4"
+              },
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT JB"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "+CAM-GE",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+ILUM-GE",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+COORD²I",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MUX AUX TELÃO*",
+                "via": "MxCOM"
+              },
+              {
+                "nome": "PONTO 1",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "PONTO 2",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "OVER",
+                "via": "REMOTE/IFB"
+              },
+              {
+                "nome": "+CAM-GE",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+ILUM-GE",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+COORD²I",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "FOLDBACK",
+                "via": "AUX AUD"
+              },
+              {
+                "nome": "TALKBACK",
+                "via": "AUX AUD"
+              },
+              {
+                "nome": "MINUS",
+                "via": "AUX AUD"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "notas": [
+        "*Talkback (ch1), Foldback (ch2), Ponto 1 (ch3) e Ponto 2 (ch4)."
+      ],
+      "imagem": "assets/originais/p-12.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 12
+      }
+    },
+    {
+      "id": "ion-jb-getv",
+      "titulo": "ION x JB (GETV)",
+      "nome": "JB · GE TV com controle ION",
+      "praca": "JB",
+      "estudio": "JB",
+      "controle": "ION",
+      "apelidos": [
+        "ge tv",
+        "getv",
+        "react",
+        "rio",
+        "dmux"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT JB"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1",
+                "via": "TX17 JB1 (EDC TELÃO 1B)"
+              },
+              {
+                "nome": "CAMERA 2",
+                "via": "TX18 JB1 (EDC REGR PO)"
+              },
+              {
+                "nome": "CAMERA 3",
+                "via": "TX19 JB1 (GS HS TOUCH)"
+              },
+              {
+                "nome": "CAMERA 4",
+                "via": "TX20 JB1 (PR TX EG/ION-3)"
+              },
+              {
+                "nome": "CAM DR",
+                "via": "JB-1"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "IP PR TX ION 1"
+              },
+              {
+                "nome": "PGM COM CTL",
+                "via": "IP PR TX ION 2"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1",
+                "via": "DMUX-9"
+              },
+              {
+                "nome": "CAMERA 2",
+                "via": "DMUX-10"
+              },
+              {
+                "nome": "CAMERA 3",
+                "via": "DMUX-11"
+              },
+              {
+                "nome": "CAMERA 4",
+                "via": "DMUX-12"
+              },
+              {
+                "nome": "CAM DR"
+              },
+              {
+                "nome": "TVU CORD"
+              },
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "REACT",
+                "via": "AUXILIAR + ÁUDIO PGM"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT JB"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "",
+                "vazio": true
+              },
+              {
+                "nome": "ION_GE_TP 1",
+                "via": "PAINEL"
+              },
+              {
+                "nome": "OP_R0604_C",
+                "via": "PAINEL"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "PONTO 1",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "PONTO 2",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "VIVO CRD",
+                "via": "IFB GE TV VOZ"
+              },
+              {
+                "nome": "ION_GE_TP 1",
+                "via": "PAINEL"
+              },
+              {
+                "nome": "OP_R0604_C",
+                "via": "PAINEL"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "PONTO 1",
+                "via": "REMOTE"
+              },
+              {
+                "nome": "PONTO 2",
+                "via": "REMOTE"
+              },
+              {
+                "nome": "VIVO CORD",
+                "via": "REMOTE"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-13.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 13
+      }
+    },
+    {
+      "id": "ion-sp-getv",
+      "titulo": "ION x SP (GE TV)",
+      "nome": "SP · GE TV no Estúdio 6 SP com controle ION",
+      "praca": "SP",
+      "estudio": "6 SP",
+      "controle": "ION",
+      "apelidos": [
+        "ge tv",
+        "getv",
+        "react",
+        "vivo cord"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1",
+                "via": "PR RX SP-1"
+              },
+              {
+                "nome": "CAMERA 2",
+                "via": "PR RX SP-2"
+              },
+              {
+                "nome": "CAMERA 3",
+                "via": "PR RX SP-3"
+              },
+              {
+                "nome": "CAM 2 DR",
+                "via": "CAM 1 SP"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "PGM COM CTL",
+                "via": "PR TX LAWO E DR LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1"
+              },
+              {
+                "nome": "CAMERA 2"
+              },
+              {
+                "nome": "CAMERA 3"
+              },
+              {
+                "nome": "CAM 2 DR"
+              },
+              {
+                "nome": "TVU CORD"
+              },
+              {
+                "nome": "DIRETO TIT"
+              },
+              {
+                "nome": "DIRETO BY"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "REACT",
+                "via": "AUXILIAR + ÁUDIO PGM"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT SP"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "+ASS SP",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+CAM SP",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+CRD SPION",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "MIC BY",
+                "via": "REMOTE"
+              },
+              {
+                "nome": "OVER",
+                "via": "IFB EVNT"
+              },
+              {
+                "nome": "+CAM SP",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+ASS SP",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+CRD SPION",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "VIVO CORD",
+                "via": "IFB GE TV VOZ"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "AUX AUD"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "Câmeras 1, 2 e 3 SP",
+          "canais": [
+            "LAPELA NARRA",
+            "LAPELA COMENTA",
+            "MD NARRA",
+            "MD COMENTA"
+          ]
+        },
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-14.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 14
+      }
+    },
+    {
+      "id": "ion-jb-jungle-d2",
+      "titulo": "ION x JB (Jungle alterado pelo D2)",
+      "nome": "JB · Jungle Fight (versão alterada pelo D2)",
+      "praca": "JB",
+      "estudio": "JB",
+      "controle": "ION",
+      "apelidos": [
+        "jungle",
+        "mma",
+        "luta",
+        "d2",
+        "rio",
+        "dmx"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT JB",
+            "destaque": true
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1",
+                "via": "PR RX 09"
+              },
+              {
+                "nome": "CAMERA 2",
+                "via": "PR RX 10"
+              },
+              {
+                "nome": "CAMERA 3",
+                "via": "PR RX 11"
+              },
+              {
+                "nome": "CAMERA 4",
+                "via": "PR RX 12"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MUX TELÃO",
+                "via": "PR TX 1 LAWO"
+              },
+              {
+                "nome": "PGM COM CTL",
+                "via": "PR TX LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1",
+                "via": "DMX 6"
+              },
+              {
+                "nome": "CAMERA 2",
+                "via": "DMX 7"
+              },
+              {
+                "nome": "CAMERA 3",
+                "via": "DMX 8"
+              },
+              {
+                "nome": "CAMERA 4",
+                "via": "DMX 9"
+              },
+              {
+                "nome": "DIRETO BY"
+              },
+              {
+                "nome": "DIRETO BY"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT JB",
+            "destaque": true
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "OVER",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "PRE PT1",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "PRE PT2",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "+CAM-GE",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MUX AUX TELÃO*",
+                "via": "MxCOM"
+              },
+              {
+                "nome": "CRD PT1",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "CRD PT2",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "OVER",
+                "via": "REMOTE/IFB"
+              },
+              {
+                "nome": "+CAM-GE",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "FOLDBACK",
+                "via": "AUX AUD"
+              },
+              {
+                "nome": "TALKBACK",
+                "via": "AUX AUD"
+              },
+              {
+                "nome": "MINUS",
+                "via": "AUX AUD"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM Comercializado",
+          "canais": [
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE",
+            "MIX COM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "destaque": true,
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "notas": [
+        "*Talkback (ch1), Foldback (ch2), Ponto 1 (ch3) e Ponto 2 (ch4)."
+      ],
+      "imagem": "assets/originais/p-15.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 15
+      }
+    },
+    {
+      "id": "ion-site-tvg",
+      "titulo": "ION x Site TVG",
+      "nome": "TVG · Site TVG (gravação de praças externas)",
+      "praca": "TVG",
+      "estudio": "JB / SP / RCE / BHE",
+      "controle": "JB / SP / RCE / BHE",
+      "modelo": "TVG",
+      "apelidos": [
+        "site",
+        "gravar",
+        "cot ext",
+        "externo"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT EXT"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "GRAVAR",
+            "gravar": true
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO SEM SONO"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "DIRETO",
+                "via": "LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "DIRETO"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO SEM SONO"
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT EXT"
+          },
+          {
+            "nome": "COT ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CORD",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "MINUS",
+                "via": "DIRECT"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE",
+            "MIX SEM FOGUETE"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "VOZ",
+            "AMBIENTE MONO",
+            "MIX SEM FOGUETE L",
+            "MIX SEM FOGUETE R",
+            "AUX CENTRAL APITO",
+            "AUX CENTRAL APITO",
+            "AMBIENTE L",
+            "AMBIENTE R"
+          ]
+        }
+      ],
+      "notas": [
+        "*Talkback (ch1), Foldback (ch2), Ponto 1 (ch3) e Ponto 2 (ch4)."
+      ],
+      "imagem": "assets/originais/p-16.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 16
+      }
+    },
+    {
+      "id": "ion-eg-mg3-b-ion",
+      "titulo": "ION x EG",
+      "nome": "EG · Estúdio MG3 com controle B ION",
+      "praca": "EG",
+      "estudio": "MG3",
+      "controle": "B ION",
+      "apelidos": [
+        "estúdios globo",
+        "porchat",
+        "camera x",
+        "mvw"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT EG"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CAMERA X",
+                "via": "PR RX"
+              },
+              {
+                "nome": "CAMERA X",
+                "via": "PR RX"
+              },
+              {
+                "nome": "CAMERA X",
+                "via": "PR RX"
+              },
+              {
+                "nome": "CAM DR",
+                "via": "MW DR"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "PGM AR",
+                "via": "PR TX LAWO"
+              },
+              {
+                "nome": "AUX TELÃO",
+                "via": "PR TX LAWO"
+              },
+              {
+                "nome": "MVW AUDIO CTL",
+                "via": "PR TX LAWO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CAMERA X"
+              },
+              {
+                "nome": "CAMERA X"
+              },
+              {
+                "nome": "CAMERA X"
+              },
+              {
+                "nome": "CAMERA DR"
+              },
+              {
+                "nome": "",
+                "vazio": true
+              },
+              {
+                "nome": "",
+                "vazio": true
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM COM"
+              },
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT EG"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "+CAM EG",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "+PROD EG",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "+ILUM EG",
+                "via": "DIRECT"
+              },
+              {
+                "nome": "+AUD EG",
+                "via": "DIRECT"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "TALK EG",
+                "via": "LQ FECHADO VIA DIRECT"
+              },
+              {
+                "nome": "PONTO 1",
+                "via": "LQ FECHADO VIA DIRECT"
+              },
+              {
+                "nome": "PONTO 2",
+                "via": "LQ FECHADO VIA DIRECT"
+              },
+              {
+                "nome": "PONTO 3",
+                "via": "LQ FECHADO VIA DIRECT"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "+CAM EG",
+                "via": "IFB"
+              },
+              {
+                "nome": "+PROD EG",
+                "via": "IFB"
+              },
+              {
+                "nome": "+ILUM EG",
+                "via": "IFB"
+              },
+              {
+                "nome": "+AUD EG",
+                "via": "IFB"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "TALKBACK",
+                "via": "AUX AUD"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "Camera X",
+          "destaque": true,
+          "canais": [
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "titulo": "Camera DR",
+          "destaque": true,
+          "canais": [
+            "",
+            "",
+            "",
+            ""
+          ]
+        },
+        {
+          "titulo": "PGM TIT",
+          "canais": [
+            "MIX L",
+            "MIX R",
+            "MIX L",
+            "MIX R"
+          ]
+        },
+        {
+          "titulo": "PGM BY",
+          "canais": [
+            "MIX L",
+            "MIX R",
+            "MIX L",
+            "MIX R"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "destaque": true,
+          "canais": [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-17.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 17
+      }
+    },
+    {
+      "id": "ion-eg-web",
+      "titulo": "ION x EG (web)",
+      "nome": "EG · Web com controle EG",
+      "praca": "EG",
+      "estudio": "EG",
+      "controle": "EG",
+      "station": "MSW / GNT / TVG entretenimento",
+      "apelidos": [
+        "estúdios globo",
+        "web",
+        "pvw web",
+        "gnt",
+        "msw",
+        "entretenimento"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT EG"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT",
+                "via": "PR RX"
+              },
+              {
+                "nome": "PGM BY",
+                "via": "PR RX"
+              },
+              {
+                "nome": "PGM DR",
+                "via": "MW DR"
+              }
+            ],
+            "volta": []
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM TIT",
+                "via": "REMOTE"
+              },
+              {
+                "nome": "PGM BY",
+                "via": "REMOTE"
+              },
+              {
+                "nome": "PGM DR",
+                "via": "REMOTE"
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT EG"
+          },
+          {
+            "nome": "COT ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "PVW WEB",
+                "via": "PAINEL"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "PVW WEB",
+                "via": "PAINEL"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX",
+            "MIX",
+            "MIX",
+            "MIX"
+          ]
+        }
+      ],
+      "imagem": "assets/originais/p-18.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 18
+      }
+    },
+    {
+      "id": "ion-eg-mg3-ion",
+      "titulo": "ION x EG",
+      "nome": "EG · Estúdio MG3 com controle ION",
+      "praca": "EG",
+      "estudio": "MG3",
+      "controle": "ION",
+      "station": "MSW / GNT / TVG entretenimento",
+      "apelidos": [
+        "estúdios globo",
+        "porchat",
+        "mvw",
+        "gnt",
+        "msw",
+        "entretenimento"
+      ],
+      "video": {
+        "nos": [
+          {
+            "nome": "COT EG"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          },
+          {
+            "nome": "EXIB"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1",
+                "via": "PR RX"
+              },
+              {
+                "nome": "CAMERA 2",
+                "via": "PR RX"
+              },
+              {
+                "nome": "CAMERA X",
+                "via": "PR RX"
+              },
+              {
+                "nome": "CAM DR*",
+                "via": "MW DR"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "PGM COM",
+                "via": "PR TX"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "via": "PR TX"
+              },
+              {
+                "nome": "MVW AUDIO CTL",
+                "via": "PR TX"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "CAMERA 1"
+              },
+              {
+                "nome": "CAMERA 2"
+              },
+              {
+                "nome": "CAMERA 3"
+              },
+              {
+                "nome": "CAMERA DR"
+              },
+              {
+                "nome": "",
+                "vazio": true
+              },
+              {
+                "nome": "",
+                "vazio": true
+              }
+            ],
+            "volta": [
+              {
+                "nome": "AUX TELÃO"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "PGM PROD"
+              },
+              {
+                "nome": "PGM LIMPO",
+                "gravar": true
+              }
+            ],
+            "volta": []
+          }
+        ]
+      },
+      "audio": {
+        "nos": [
+          {
+            "nome": "COT EG"
+          },
+          {
+            "nome": "COT ION"
+          },
+          {
+            "nome": "CTL ION"
+          }
+        ],
+        "links": [
+          {
+            "ida": [
+              {
+                "nome": "+CAM EG",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+PROD EG",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+ILUM EG",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+AUD EG",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "TALK EG",
+                "via": "DIRECT/LQ"
+              },
+              {
+                "nome": "PONTO 1",
+                "via": "DIRECT/LQ"
+              },
+              {
+                "nome": "PONTO 2",
+                "via": "DIRECT/LQ"
+              },
+              {
+                "nome": "PONTO 3",
+                "via": "DIRECT/LQ"
+              }
+            ]
+          },
+          {
+            "ida": [
+              {
+                "nome": "+CAM EG",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+PROD EG",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+ILUM EG",
+                "via": "PARTYLINE"
+              },
+              {
+                "nome": "+AUD EG",
+                "via": "PARTYLINE"
+              }
+            ],
+            "volta": [
+              {
+                "nome": "TALKBACK",
+                "via": "AUX AUD"
+              }
+            ]
+          }
+        ]
+      },
+      "canais": [
+        {
+          "titulo": "PGM Produzido",
+          "canais": [
+            "MIX",
+            "MIX",
+            "MIX",
+            "MIX"
+          ]
+        },
+        {
+          "titulo": "PGM Limpo",
+          "canais": [
+            "MIX",
+            "MIX",
+            "MIX",
+            "MIX"
+          ]
+        }
+      ],
+      "notas": [
+        "*MICs DR no vídeo da câmera DR."
+      ],
+      "imagem": "assets/originais/p-19.jpg",
+      "fonte": {
+        "arquivo": "INFOGRAFICO_PRODUCOES_COT_2025.pdf",
+        "slide": 19
+      }
+    }
+  ]
+}
