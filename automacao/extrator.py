@@ -113,8 +113,19 @@ def _normalizar(texto: str) -> str:
     return re.sub(r"\s+", " ", sem_acento).strip().upper()
 
 
+_INVISIVEIS = dict.fromkeys(map(ord, "\u200b\u200c\u200d\u2060\ufeff\u00ad"))
+
+
+def _juntar(linhas: list[str]) -> str:
+    """Junta as linhas de uma caixa: "DTV/" + "CAMERA" → "DTV/CAMERA"."""
+    texto = ""
+    for linha in linhas:
+        texto += linha if (not texto or texto.endswith(("/", "-", "_"))) else " " + linha
+    return texto
+
+
 def _limpar(texto: str) -> str:
-    return re.sub(r"\s+", " ", texto.replace("\u000b", " ")).strip()
+    return re.sub(r"\s+", " ", texto.translate(_INVISIVEIS).replace("\u000b", " ")).strip()
 
 
 def _xfrm_filhos(grupo) -> tuple[float, float, float, float, float, float]:
@@ -156,7 +167,7 @@ def _ler_texto(sh, forma: Forma) -> None:
                 linhas.append(_limpar(parte))
         runs.extend(r for r in p.runs if r.text.strip())
     forma.linhas = linhas
-    forma.texto = " ".join(linhas)
+    forma.texto = _juntar(linhas)
     if runs:
         forma.riscado = all(
             (r.font._rPr is not None and r.font._rPr.get("strike") in ("sngStrike", "dblStrike")) for r in runs
@@ -183,12 +194,76 @@ def _ler_seta(sh, forma: Forma, el) -> None:
         forma.ponta_fim = tail is not None and tail.get("type", "none") != "none"
 
 
+_NS_MATH = "{http://schemas.openxmlformats.org/officeDocument/2006/math}"
+_NS_MC = "{http://schemas.openxmlformats.org/markup-compatibility/2006}"
+_SOBRESCRITO = str.maketrans("0123456789+-", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻")
+
+
+def _forma_alternativa(ac, transf) -> Forma | None:
+    """
+    Forma guardada em <mc:AlternateContent> — o PowerPoint usa isso para caixas
+    com equação (Office Math), e o python-pptx não as enxerga. Lê a versão
+    <mc:Choice>: posição, preenchimento e texto (inclusive o da equação).
+    """
+    escolha = ac.find(_NS_MC + "Choice")
+    sp = escolha.find(qn("p:sp")) if escolha is not None else None
+    if sp is None:
+        return None
+    sp_pr = sp.find(qn("p:spPr"))
+    xfrm = sp_pr.find(qn("a:xfrm")) if sp_pr is not None else None
+    if xfrm is None or xfrm.find(qn("a:off")) is None or xfrm.find(qn("a:ext")) is None:
+        return None
+    sx, sy, ox, oy, cx0, cy0 = transf
+    off, ext = xfrm.find(qn("a:off")), xfrm.find(qn("a:ext"))
+    f = Forma(
+        id=int(sp.find(qn("p:nvSpPr")).find(qn("p:cNvPr")).get("id", "0")),
+        nome=sp.find(qn("p:nvSpPr")).find(qn("p:cNvPr")).get("name", ""),
+        x=ox + (int(off.get("x")) - cx0) * sx,
+        y=oy + (int(off.get("y")) - cy0) * sy,
+        w=int(ext.get("cx")) * sx,
+        h=int(ext.get("cy")) * sy,
+    )
+    corpo = sp.find(qn("p:txBody"))
+    linhas = []
+    if corpo is not None:
+        for par in corpo.findall(qn("a:p")):
+            partes = []
+            for el in par.iter():
+                if el.tag == qn("a:t") or el.tag == _NS_MATH + "t":
+                    texto = el.text or ""
+                    pai = el.getparent()
+                    while pai is not None and pai is not par:
+                        if pai.tag == _NS_MATH + "sup":
+                            texto = texto.translate(_SOBRESCRITO)
+                            break
+                        pai = pai.getparent()
+                    partes.append(texto)
+                elif el.tag == qn("a:br"):
+                    partes.append("\n")
+            for parte in "".join(partes).split("\n"):
+                if parte.strip():
+                    linhas.append(_limpar(parte))
+    f.linhas = linhas
+    f.texto = _juntar(linhas)
+    estilo = sp.find(qn("p:style"))
+    ref = estilo.find(qn("a:fillRef")) if estilo is not None else None
+    f.preenchida = sp_pr.find(qn("a:solidFill")) is not None or (
+        sp_pr.find(qn("a:noFill")) is None and ref is not None and ref.get("idx", "0") != "0"
+    )
+    return f
+
+
 def ler_formas(slide) -> list[Forma]:
     """Todas as formas do slide, com grupos desfeitos e coordenadas absolutas (EMU)."""
     formas: list[Forma] = []
 
-    def visitar(shapes, transf):
+    def visitar(shapes, transf, container=None):
         sx, sy, ox, oy, cx0, cy0 = transf
+        if container is not None:
+            for ac in container.findall(_NS_MC + "AlternateContent"):
+                f = _forma_alternativa(ac, transf)
+                if f is not None:
+                    formas.append(f)
         for sh in shapes:
             if sh.left is None or sh.top is None:
                 continue
@@ -199,7 +274,7 @@ def ler_formas(slide) -> list[Forma]:
             if sh.shape_type == MSO_SHAPE_TYPE.GROUP:
                 gsx, gsy, gox, goy, gcx, gcy = _xfrm_filhos(sh)
                 # compõe a transformação do grupo com a do grupo pai
-                visitar(sh.shapes, (sx * gsx, sy * gsy, x - gcx * sx * gsx, y - gcy * sy * gsy, 0, 0))
+                visitar(sh.shapes, (sx * gsx, sy * gsy, x - gcx * sx * gsx, y - gcy * sy * gsy, 0, 0), sh._element)
                 continue
             f = Forma(id=sh.shape_id, nome=sh.name, x=x, y=y, w=w, h=h)
             _ler_texto(sh, f)
@@ -229,7 +304,7 @@ def ler_formas(slide) -> list[Forma]:
             _ler_seta(sh, f, sh._element)
             formas.append(f)
 
-    visitar(slide.shapes, (1, 1, 0, 0, 0, 0))
+    visitar(slide.shapes, (1, 1, 0, 0, 0, 0), slide.shapes._spTree)
     return formas
 
 
@@ -403,7 +478,15 @@ def interpretar_slide(slide, numero: int, arquivo: str) -> tuple[dict, list[str]
     if _normalizar(notas.get("ocultar", "")) in ("SIM", "S", "TRUE", "1", "X"):
         raise SlideIgnorado("marcado com 'Ocultar: sim' nas notas")
 
-    rotulos = {SECOES[_normalizar(f.texto)]: f for f in formas if _normalizar(f.texto) in SECOES}
+    candidatos: dict[str, list[Forma]] = {}
+    for f in formas:
+        if _normalizar(f.texto) in SECOES:
+            candidatos.setdefault(SECOES[_normalizar(f.texto)], []).append(f)
+    centro = statistics.mean(f.cx for lista in candidatos.values() for f in lista) if candidatos else 0
+    if "video" in candidatos and "audio" in candidatos:
+        # o rótulo de áudio fica na mesma coluna do de vídeo
+        centro = min(candidatos["video"], key=lambda f: f.y).cx
+    rotulos = {sec: min(lista, key=lambda f: abs(f.cx - centro)) for sec, lista in candidatos.items()}
     if not rotulos:
         raise SlideIgnorado("sem os rótulos VIDEO/AUDIO")
 
@@ -412,7 +495,9 @@ def interpretar_slide(slide, numero: int, arquivo: str) -> tuple[dict, list[str]
     # Título: placeholder de título ou o texto mais alto do slide.
     com_texto = [f for f in restantes if f.texto]
     titulo_f = next((f for f in com_texto if f.titulo), None) or min(
-        (f for f in com_texto if f.y2 < min(r.y for r in rotulos.values())), key=lambda f: f.y, default=None
+        (f for f in com_texto if f.cy < min(r.y for r in rotulos.values()) and not _eh_modelo(f)),
+        key=lambda f: f.y,
+        default=None,
     )
     titulo = titulo_f.texto if titulo_f else f"Slide {numero}"
     restantes = [f for f in restantes if f is not titulo_f]
@@ -456,11 +541,13 @@ def interpretar_slide(slide, numero: int, arquivo: str) -> tuple[dict, list[str]
             if f.seta or f.preenchida:
                 livres.append(f)
             continue
+        if not f.texto.strip("* "):  # "*" solto: marca de rodapé ao lado de um sinal
+            continue
         if "EM CONSTRU" in n:
             evento["emConstrucao"] = True
         elif n.startswith("STATION"):
             evento["station"] = f.texto.split(":", 1)[-1].strip()
-        elif f.texto.startswith("*"):
+        elif f.texto.startswith("*") and len(f.texto.strip("* ")) >= 3:
             notas_slide.append(f.texto)
         elif _eh_gravar(f) and f.h < (max((r.h for r in rotulos.values()), default=0) * 3):
             gravar.append(f)
