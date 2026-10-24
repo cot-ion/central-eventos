@@ -151,7 +151,7 @@ def _ler_texto(sh, forma: Forma) -> None:
     linhas, runs = [], []
     for p in sh.text_frame.paragraphs:
         # quebras de linha (Shift+Enter) dentro do parágrafo também separam linhas
-        for parte in re.split(r"[\u000b\n]", "".join(r.text for r in p.runs)):
+        for parte in re.split(r"[\u000b\n]", p.text):
             if parte.strip():
                 linhas.append(_limpar(parte))
         runs.extend(r for r in p.runs if r.text.strip())
@@ -296,11 +296,19 @@ def _ler_modelo(f: Forma) -> dict[str, str]:
     return {k: v for k, v in out.items() if v}
 
 
-def _canais(f: Forma) -> dict | None:
+RE_MODELO = re.compile(r"^(MODELO|ESTUDIO|CONTROLES?)\b")
+
+
+def _eh_modelo(f: Forma) -> bool:
+    return bool(f.linhas) and bool(RE_MODELO.match(_normalizar(f.linhas[0])))
+
+
+def _canais(f: Forma, titulo_externo: str = "") -> dict | None:
     linhas_ch = [RE_CANAL.match(_limpar(l)) for l in f.linhas]
     if not any(linhas_ch):
         return None
-    titulo = next((l for l, m in zip(f.linhas, linhas_ch) if not m), "").rstrip(":").strip()
+    titulo = next((l for l, m in zip(f.linhas, linhas_ch) if not m), "") or titulo_externo
+    titulo = titulo.rstrip(":").strip()
     canais: dict[int, str] = {}
     for m in linhas_ch:
         if m:
@@ -351,7 +359,7 @@ def _montar_fluxo(nos, pilulas, vias, setas, gravar, avisos, secao) -> dict:
 
     links = []
     for a, b in zip(nos, nos[1:]):
-        no_vao = [p for p in pilulas if a.cx < p.cx < b.cx]
+        no_vao = [p for p in pilulas if a.cx < p.cx < b.cx and p.x >= a.x and p.x2 <= b.x2]
         vias_vao = [v for v in vias if a.x2 - tol < v.cx < b.x + tol]
         setas_vao = [s for s in setas if min(s.seta[0], s.seta[2]) < b.x and max(s.seta[0], s.seta[2]) > a.x2 - tol]
         ida, volta = [], []
@@ -375,7 +383,7 @@ def _montar_fluxo(nos, pilulas, vias, setas, gravar, avisos, secao) -> dict:
                 for v in vias_vao
                 if v.id not in usadas
                 and -tol * 1.6 <= v.cy - y_ref <= tol * 0.5
-                and ((v.cx > p.cx) if sentido > 0 else (v.cx < p.cx))
+                and ((v.x2 > p.x2) if sentido > 0 else (v.x < p.x))
             ]
             if cand_via:
                 via = min(cand_via, key=lambda v: (abs(v.cy - y_ref), abs(v.cx - p.cx)))
@@ -412,17 +420,43 @@ def interpretar_slide(slide, numero: int, arquivo: str) -> tuple[dict, list[str]
     evento: dict = {"titulo": titulo}
     canais, notas_slide = [], []
     gravar, livres = [], []
+
+    # Caixa "Modelo / Estúdio / Controle": pode ser uma forma só ou várias.
+    partes_modelo = sorted((f for f in restantes if _eh_modelo(f)), key=lambda f: (f.y, f.x))
+    if partes_modelo:
+        juntas = Forma(id=-1, nome="modelo", x=0, y=0, w=0, h=0, linhas=[l for f in partes_modelo for l in f.linhas])
+        evento.update(_ler_modelo(juntas))
+    restantes = [f for f in restantes if f not in partes_modelo]
+
+    # Canais: as linhas "CH n" podem estar numa forma e o título na moldura em volta.
+    blocos_ch = [f for f in restantes if any(RE_CANAL.match(l) for l in f.linhas)]
+    titulos_usados = set()
+    for f in blocos_ch:
+        titulo_externo = ""
+        if not any(not RE_CANAL.match(l) for l in f.linhas):
+            molduras = [
+                m for m in restantes
+                if m not in blocos_ch and m.texto and m.x <= f.cx <= m.x2 and m.y <= f.y + f.h / 2 <= m.y2 and m.y < f.y
+            ]
+            moldura = min(molduras, key=lambda m: m.w * m.h, default=None)
+            if moldura is None:  # sem moldura: texto logo acima, na mesma coluna
+                acima = [m for m in restantes if m not in blocos_ch and m.texto.endswith(":") and m.y2 <= f.y + 5 * EMU_POR_PT
+                         and m.x < f.x2 and m.x2 > f.x]
+                moldura = max(acima, key=lambda m: m.y2, default=None)
+            if moldura is not None:
+                titulo_externo = moldura.linhas[0]
+                titulos_usados.add(moldura.id)
+        grupo = _canais(f, titulo_externo)
+        canais.append((f, grupo))
+    restantes = [f for f in restantes if f not in blocos_ch and f.id not in titulos_usados]
+
     for f in restantes:
         n = _normalizar(f.texto)
         if not f.texto:
             if f.seta or f.preenchida:
                 livres.append(f)
             continue
-        if re.search(r"\b(ESTUDIO|CONTROLE)S?\b", n) and ":" in f.texto and n.startswith(("MODELO", "ESTUDIO")):
-            evento.update(_ler_modelo(f))
-        elif (grupo := _canais(f)) is not None:
-            canais.append((f, grupo))
-        elif "EM CONSTRU" in n:
+        if "EM CONSTRU" in n:
             evento["emConstrucao"] = True
         elif n.startswith("STATION"):
             evento["station"] = f.texto.split(":", 1)[-1].strip()
@@ -462,7 +496,15 @@ def interpretar_slide(slide, numero: int, arquivo: str) -> tuple[dict, list[str]
 
     if canais:
         # ordem de leitura: colunas da esquerda para a direita, de cima para baixo
-        canais.sort(key=lambda fg: (round(fg[0].x / (fg[0].w or 1)), fg[0].y))
+        # agrupa em colunas caixas com x a menos de ~1 cm uma da outra
+        canais.sort(key=lambda fg: fg[0].x)
+        coluna, x_ant, ordem = 0, None, []
+        for f, g in canais:
+            if x_ant is not None and f.x - x_ant > 360000:
+                coluna += 1
+            x_ant = f.x
+            ordem.append((coluna, f.y, g))
+        canais = [(None, g) for _, _, g in sorted(ordem, key=lambda t: t[:2])]
         evento["canais"] = [g for _, g in canais]
     if notas_slide:
         evento["notas"] = notas_slide

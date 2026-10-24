@@ -325,6 +325,9 @@ python -m unittest discover -s testes -v
 
 - `testes/gerar_exemplo.py` gera um .pptx sintético no padrão do infográfico. Ele
   inclui grupos, setas, tachado, texto vermelho, notas de slide e `GRAVAR`.
+- `testes/exemplos/` guarda .pptx reais do infográfico. `testes/test_exemplo_real.py`
+  confere que a extração deles bate com o modelo transcrito do PDF. **Ao criar um
+  layout novo no PowerPoint, copie um exemplo para essa pasta e acrescente um teste.**
 - `testes/test_sincronizar.py` simula o GitHub com um repositório git local e
   cobre: publicação, "sem mudanças", trava de segurança, arquivo corrompido e simulação.
 - Os testes rodam no GitHub Actions (*Testes da automação*) a cada mudança em `automacao/`.
