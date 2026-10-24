@@ -142,12 +142,16 @@ powershell -ExecutionPolicy Bypass -File .\instalar.ps1
 
 ### Passo 6 — GitHub Pages (uma vez, no GitHub)
 
-No repositório: **Settings → Pages → Build and deployment → Source: GitHub
-Actions**. A cada push no `main`, o workflow *Publicar no GitHub Pages*
-republica o site em cerca de 1 minuto. O link do site não muda.
+No repositório, **Settings → Pages → Build and deployment**:
+**Source: Deploy from a branch**, **Branch: `main`** e pasta **`/ (root)`** → *Save*.
+A cada push no `main`, o GitHub republica o site em cerca de 1 minuto
+(*pages build and deployment* na aba Actions). O link do site não muda.
 
-> GitHub Pages em repositório **privado** exige plano pago da organização.
-> Como o conteúdo pode ser público, o mais simples é deixar o repositório público.
+Em **Settings → General → Default branch**, deixe `main` como padrão.
+
+O repositório é **público**: qualquer pessoa pode ver o código e o
+`data/eventos.json`. Isso é intencional, porque o conteúdo do site é público.
+O token nunca vai para o repositório.
 
 ---
 
@@ -331,4 +335,5 @@ python -m unittest discover -s testes -v
 - `testes/test_sincronizar.py` simula o GitHub com um repositório git local e
   cobre: publicação, "sem mudanças", trava de segurança, arquivo corrompido e simulação.
 - Os testes rodam no GitHub Actions (*Testes da automação*) a cada mudança em `automacao/`.
+  Um teste vermelho não impede a publicação, mas avisa que o extrator mudou de comportamento.
 - Formato do JSON: veja o comentário no topo de `js/data.js`.
