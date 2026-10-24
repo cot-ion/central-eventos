@@ -167,11 +167,14 @@ function GitHub([string]$metodo, [string]$caminho, $corpo = $null) {
       throw $e
     }
     $status = [int]$r.StatusCode
+    # No PS 5.1 o corpo da resposta de erro fica em ErrorDetails.Message.
     $texto = ''
-    try { $texto = (New-Object IO.StreamReader($r.GetResponseStream())).ReadToEnd() } catch { }
+    if ($_.ErrorDetails -and $_.ErrorDetails.Message) { $texto = $_.ErrorDetails.Message }
+    else { try { $texto = (New-Object IO.StreamReader($r.GetResponseStream())).ReadToEnd() } catch { } }
+    try { $j = $texto | ConvertFrom-Json; if ($j.message) { $texto = "GitHub: $($j.message)" } } catch { }
     $dica = ''
     if ($status -eq 401) { $dica = ' — token inválido ou expirado (ver README: renovar o token)' }
-    elseif ($status -eq 403) { $dica = ' — token sem permissão Contents: Read and write, ou limite de uso da API' }
+    elseif ($status -eq 403) { $dica = ' — o token não pode escrever neste repositório. Confira no GitHub: (1) token criado pela conta dona do repositório (Resource owner = cot-ion); (2) Repository access = Only select repositories → central-eventos; (3) Contents = Read and write' }
     elseif ($status -eq 404) { $dica = ' — não encontrado (repositório/branch/token sem acesso ao repositório?)' }
     $e = New-Object System.Exception("GitHub $metodo $caminho → HTTP $status$dica. $texto")
     $e.Data['status'] = $status

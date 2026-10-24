@@ -12,7 +12,9 @@ OneDrive (pasta da equipe) ──▶ baia: publicar.ps1 ──▶ GitHub: pptx/ 
 
 ## 1. Gerar o token (uma vez, para todas as baias)
 
-No GitHub: **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**
+**Entre no GitHub com a conta `cot-ion`** (a dona do repositório — um token
+criado por outra conta não consegue escrever nele, mesmo que essa conta seja
+colaboradora). Depois: **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**
 
 | Campo | Valor |
 | --- | --- |
@@ -99,7 +101,7 @@ Se o token vencer antes, nada quebra no site: as baias só param de publicar
 | `pasta '...' não encontrada` | O OneDrive desta baia sincroniza a biblioteca? O nome em `pasta` está igual? |
 | `mais de uma pasta '...' encontrada` | Preencha `caminho_contem` com um trecho do caminho certo. |
 | `HTTP 401` | Token vencido ou errado → renove. |
-| `HTTP 403` | Token sem *Contents: Read and write* neste repositório. |
+| `HTTP 403` | O token não pode escrever no repositório. Ele precisa ser criado **logado na conta `cot-ion`** (dona do repositório), com *Only select repositories → central-eventos* e *Contents: Read and write*. Permissões podem ser editadas no token existente; o dono, não. |
 | `sem conexão com api.github.com` | Rede ou proxy. A baia tenta de novo na próxima rodada. |
 | `removeria N de M arquivos` | Proteção: sumiu muita coisa de uma vez. Se foi de propósito, rode o `publicar.ps1 -Forcar` uma vez. |
 | `salvo há menos de 2 min` | Normal: espera o OneDrive terminar de gravar. |
