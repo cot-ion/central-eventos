@@ -14,34 +14,34 @@ npx serve .          # ou: python3 -m http.server 8080
 
 ## Conteúdo: atualização automática
 
-Os modelos vêm de **`data/eventos.json`**, gerado automaticamente a partir dos
-.pptx de uma pasta do SharePoint. Uma máquina da equipe lê a pasta a cada
-10 minutos e publica as mudanças aqui. O GitHub Pages republica o site sozinho.
+```
+Pasta do SharePoint ──OneDrive──▶ baias (publicar.ps1, a cada 15 min) ──▶ pptx/ no GitHub
+        ──▶ GitHub Actions converte (automacao/) ──▶ data/eventos.json ──▶ site
+```
 
-➡️ **Instalação, manutenção e reconfiguração: [`automacao/README.md`](automacao/README.md)**
+- **Instalar / manter as baias:** [`baias/README.md`](baias/README.md)
+- **Como os .pptx são lidos e como montar os slides:** [`automacao/README.md`](automacao/README.md)
 
-Não edite o `data/eventos.json` à mão: ele é sobrescrito na próxima sincronização.
-Para mudar um nome ou apelido, use as notas do slide no PowerPoint (ver o guia).
+O `data/eventos.json` não fica no repositório: é gerado a cada publicação.
+Os modelos transcritos à mão do PDF original estão em `data/manual.json`.
 
 ## Estrutura
 
 | Arquivo | O que é |
 | --- | --- |
-| `data/eventos.json` | Modelos de evento (gerado pela automação). |
-| `automacao/` | Script de sincronização (Python), instalador da tarefa agendada e teste de conexão. |
-| `js/data.js` | Carregamento do JSON, cores das praças e formato dos sinais. |
-| `js/search.js` | Busca (sem acento, por praça, estúdio, controle, sinal, meio/VIA, canais, arquivo). |
-| `js/app.js` | Home com busca, página de cada modelo e página de status (`#/status`). |
-| `css/styles.css` | Visual (tema claro/escuro automático, layout mobile). |
-| `assets/originais/` | Imagens das páginas do PDF original ("Ver diagrama original" dos modelos importados do PDF). |
+| `pptx/`, `pptx-teste/` | .pptx enviados pelas baias + `manifest.json` (não edite à mão). |
+| `baias/` | Scripts das baias (PowerShell, sem admin) e instalador. |
+| `automacao/` | Conversão dos .pptx (Python, roda no GitHub Actions) e testes. |
+| `data/manual.json` | Modelos importados do PDF do infográfico. |
+| `js/`, `css/`, `index.html` | O site (busca, página de cada modelo, `#/status`). |
+| `assets/originais/` | Imagens das páginas do PDF ("Ver diagrama original"). |
 | `sw.js`, `manifest.webmanifest` | PWA / instalação / offline. |
 
-O `data/eventos.json` é sempre buscado na rede primeiro, então os celulares
-recebem conteúdo novo sem nenhuma ação. Só quando o **código** do site
-(HTML/CSS/JS) mudar é preciso incrementar `VERSION` em `sw.js`.
+O JSON é sempre buscado na rede primeiro, então os celulares recebem conteúdo
+novo sem nenhuma ação. Só quando o **código** do site mudar é preciso
+incrementar `VERSION` em `sw.js`.
 
 ## Publicar
 
-O GitHub Pages publica direto do branch `main`, a cada push
-(*Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `(root)`*).
-O arquivo `.nojekyll` faz o site ser servido como está, sem processamento.
+O workflow `.github/workflows/site.yml` gera os dados e publica no GitHub Pages
+a cada push no `main` (*Settings → Pages → Source: GitHub Actions*).

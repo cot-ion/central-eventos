@@ -1,10 +1,13 @@
-# automação — arquivos locais da máquina que roda a sincronização
-automacao/config.ini
-automacao/logs/
-automacao/.venv/
-automacao/.sincronizar.lock
-*.inspecao.json
+# Token das baias — NUNCA commitar
+config.json
+baias/config.json
+
+# Gerado pelo GitHub Actions (ver .github/workflows/site.yml)
+data/eventos.json
+data/eventos-teste.json
+_site/
+
+# Python
 __pycache__/
 *.pyc
-data/*.json.tmp
-automacao/teste_conexao_resultado.txt
+*.inspecao.json
