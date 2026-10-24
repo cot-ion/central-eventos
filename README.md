@@ -42,5 +42,6 @@ recebem conteúdo novo sem nenhuma ação. Só quando o **código** do site
 
 ## Publicar
 
-O workflow `.github/workflows/pages.yml` publica no GitHub Pages a cada push em `main`
-(ative em *Settings → Pages → Source: GitHub Actions*).
+O GitHub Pages publica direto do branch `main`, a cada push
+(*Settings → Pages → Build and deployment → Source: Deploy from a branch → `main` / `(root)`*).
+O arquivo `.nojekyll` faz o site ser servido como está, sem processamento.
