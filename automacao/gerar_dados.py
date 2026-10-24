@@ -8,6 +8,8 @@ Roda no GitHub Actions (.github/workflows/site.yml) a cada push no main:
 
   --pptx      pasta do repositório com os .pptx (e o manifest.json das baias)
   --manual    modelos importados à mão (o PDF original), mantidos no site
+  --manual-so-sem-pptx  usa o --manual só enquanto a pasta não tiver .pptx
+              (evita duplicar os modelos quando o infográfico chegar pelas baias)
   --anterior  JSON publicado antes: se um .pptx não puder ser lido, os modelos
               dele continuam como estavam (em vez de sumirem do site)
   --saida     arquivo gerado
@@ -59,8 +61,11 @@ def listar_pptx(pasta: Path) -> list[Path]:
     )
 
 
-def gerar(pasta: Path, manual: dict, anterior: dict) -> dict:
+def gerar(pasta: Path, manual: dict, anterior: dict, manual_so_sem_pptx: bool = False) -> dict:
     from extrator import extrair  # importa aqui para --help funcionar sem python-pptx
+
+    if manual_so_sem_pptx and listar_pptx(pasta):
+        manual = {}
 
     manifesto = ler_json(pasta / "manifest.json")
     enviados = manifesto.get("arquivos", {})
@@ -143,6 +148,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pptx", type=Path, help="pasta com os .pptx enviados pelas baias")
     ap.add_argument("--manual", type=Path, help="JSON com os modelos importados à mão")
+    ap.add_argument("--manual-so-sem-pptx", action="store_true", help="ignora --manual se houver .pptx na pasta")
     ap.add_argument("--anterior", type=Path, help="JSON publicado anteriormente (opcional)")
     ap.add_argument("--saida", type=Path, help="JSON a gerar")
     ap.add_argument("--inspecionar", metavar="PPTX", type=Path, help="mostra as formas lidas de um .pptx")
@@ -159,7 +165,7 @@ def main() -> int:
 
     if not args.pptx or not args.saida:
         ap.error("--pptx e --saida são obrigatórios (ou use --inspecionar)")
-    dados = gerar(args.pptx, ler_json(args.manual), ler_json(args.anterior))
+    dados = gerar(args.pptx, ler_json(args.manual), ler_json(args.anterior), args.manual_so_sem_pptx)
     salvar(dados, args.saida)
     print(f"{len(dados['eventos'])} modelo(s) de {len(dados['arquivos'])} arquivo(s) → {args.saida}")
     return 0

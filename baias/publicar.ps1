@@ -281,6 +281,48 @@ function Sha-Blob([byte[]]$bytes) {
   } finally { $sha1.Dispose() }
 }
 
+# PNG de 1x1 pixel, no lugar de cada imagem/vídeo do .pptx enviado.
+$script:Pixel = [Convert]::FromBase64String('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=')
+
+function Enxugar-Pptx([byte[]]$bytes) {
+  # Copia o .pptx (que é um .zip) em memória trocando o conteúdo de ppt/media/*
+  # (fotos, vídeos) por 1 pixel. O desenho dos slides fica idêntico e o envio
+  # cai de dezenas de MB para centenas de KB. O arquivo original não é alterado.
+  Add-Type -AssemblyName System.IO.Compression
+  $entrada = New-Object IO.MemoryStream(, $bytes)
+  $saida = New-Object IO.MemoryStream
+  $zipIn = New-Object IO.Compression.ZipArchive($entrada, [IO.Compression.ZipArchiveMode]::Read)
+  try {
+    $zipOut = New-Object IO.Compression.ZipArchive($saida, [IO.Compression.ZipArchiveMode]::Create, $true)
+    try {
+      foreach ($e in $zipIn.Entries) {
+        $novo = $zipOut.CreateEntry($e.FullName, [IO.Compression.CompressionLevel]::Optimal)
+        try { $novo.LastWriteTime = $e.LastWriteTime } catch { }
+        $alvo = $novo.Open()
+        try {
+          if ($e.FullName -like 'ppt/media/*' -and -not $e.FullName.EndsWith('/')) {
+            $alvo.Write($script:Pixel, 0, $script:Pixel.Length)
+          } else {
+            $origem = $e.Open()
+            try { $origem.CopyTo($alvo) } finally { $origem.Dispose() }
+          }
+        } finally { $alvo.Dispose() }
+      }
+    } finally { $zipOut.Dispose() }
+  } finally { $zipIn.Dispose(); $entrada.Dispose() }
+  $resultado = $saida.ToArray()
+  $saida.Dispose()
+
+  # Confere que a cópia é um .pptx válido antes de usar.
+  $teste = New-Object IO.Compression.ZipArchive((New-Object IO.MemoryStream(, $resultado)), [IO.Compression.ZipArchiveMode]::Read)
+  try {
+    if ($null -eq $teste.GetEntry('[Content_Types].xml') -or $null -eq $teste.GetEntry('ppt/presentation.xml')) {
+      throw 'cópia sem [Content_Types].xml ou ppt/presentation.xml'
+    }
+  } finally { $teste.Dispose() }
+  return , $resultado   # a vírgula mantém o byte[] inteiro na saída da função
+}
+
 # ---------------------------------------------------------- comparação ---
 
 function Ler-Manifesto([string]$ref) {
@@ -309,7 +351,10 @@ function Comparar($locais, $manifesto, $cache) {
   $remover = New-Object System.Collections.ArrayList
   $vistos = Novo-Dicionario
   $agora = (Get-Date).ToUniversalTime()
+  # Com "enxugar", o limite vale para o arquivo enviado (sem as imagens); aqui só
+  # barramos arquivos absurdos, que nem vale a pena ler.
   $limite = [int64](Valor $script:Cfg 'tamanho_maximo_mb' 50) * 1MB
+  if ([bool](Valor $script:Cfg 'enxugar' $true)) { $limite = [math]::Max($limite, 1GB) }
 
   foreach ($f in $locais) {
     $vistos[$f.rel] = $true
@@ -372,22 +417,41 @@ function Publicar($mudancas, $manifesto, [string]$headSha) {
   $arvore = New-Object System.Collections.ArrayList
   $enviados = New-Object System.Collections.ArrayList
 
+  $enxugar = [bool](Valor $script:Cfg 'enxugar' $true)
   foreach ($f in $mudancas.enviar) {
     $bytes = [IO.File]::ReadAllBytes($f.caminho)   # aqui o OneDrive baixa o arquivo, se ainda não estiver no disco
-    $sha = Sha-Blob $bytes
+    $shaOriginal = Sha-Blob $bytes                 # vai para o manifesto: é o que as baias comparam
+    $envio = $bytes
+    if ($enxugar) {
+      try {
+        $envio = [byte[]](Enxugar-Pptx $bytes)
+        Log 'INFO' ("$($f.rel): {0:N1} MB → {1:N2} MB (enviado sem as imagens)" -f ($bytes.Length / 1MB), ($envio.Length / 1MB))
+      } catch {
+        Log 'AVISO' "$($f.rel): não foi possível enxugar ($($_.Exception.Message)) — enviando o arquivo inteiro"
+        $envio = $bytes
+      }
+    }
+    $maximo = [int64](Valor $script:Cfg 'tamanho_maximo_mb' 50) * 1MB
+    if ($envio.Length -gt $maximo) {
+      Log 'AVISO' ("$($f.rel): {0:N1} MB para enviar, acima de tamanho_maximo_mb — ignorado" -f ($envio.Length / 1MB))
+      continue
+    }
+    $sha = Sha-Blob $envio
     if (-not $script:BlobsEnviados.ContainsKey($sha)) {
       # JSON montado à mão: ConvertTo-Json é lento demais com strings grandes.
-      $blob = GitHub 'POST' 'git/blobs' ('{"encoding":"base64","content":"' + [Convert]::ToBase64String($bytes) + '"}')
+      $blob = GitHub 'POST' 'git/blobs' ('{"encoding":"base64","content":"' + [Convert]::ToBase64String($envio) + '"}')
       if ($blob.sha -ne $sha) { throw "hash do blob enviado ($($blob.sha)) diferente do calculado ($sha) para $($f.rel)" }
       $script:BlobsEnviados[$sha] = $true
     }
     $bytes = $null
+    $envio = $null
     [void]$arvore.Add(@{ path = "$($script:Destino)/$($f.rel)"; mode = '100644'; type = 'blob'; sha = $sha })
     [void]$enviados.Add(@{
         rel     = $f.rel
-        entrada = [ordered]@{ tamanho = $f.tamanho; modificado = $f.modificado; sha = $sha; enviado_em = Iso (Get-Date); enviado_por = $Baia }
+        entrada = [ordered]@{ tamanho = $f.tamanho; modificado = $f.modificado; sha = $shaOriginal; sha_publicado = $sha; enviado_em = Iso (Get-Date); enviado_por = $Baia }
       })
   }
+  if ($enviados.Count -eq 0 -and $mudancas.remover.Count -eq 0) { return $null }   # tudo barrado: não faz commit
   foreach ($rel in $mudancas.remover) {
     [void]$arvore.Add(@{ path = "$($script:Destino)/$rel"; mode = '100644'; type = 'blob'; sha = $null })   # sha null = apagar
   }
@@ -400,10 +464,10 @@ function Publicar($mudancas, $manifesto, [string]$headSha) {
 
   $tree = GitHub 'POST' 'git/trees' @{ base_tree = $commitBase.tree.sha; tree = $arvore }
 
-  $novos = @($mudancas.enviar | Where-Object { -not $manifesto.ContainsKey($_.rel) }).Count
-  $alterados = $mudancas.enviar.Count - $novos
+  $novos = @($enviados | Where-Object { -not $manifesto.ContainsKey($_.rel) }).Count
+  $alterados = $enviados.Count - $novos
   $linhas = @()
-  foreach ($f in $mudancas.enviar) { $linhas += "+ $($f.rel)" }
+  foreach ($f in $enviados) { $linhas += "+ $($f.rel)" }
   foreach ($r in $mudancas.remover) { $linhas += "- $r" }
   $mensagem = "Baia ${Baia}: +$novos ~$alterados -$($mudancas.remover.Count) em $($script:Destino)/`n`n" + ($linhas -join "`n")
 
@@ -521,6 +585,7 @@ function Rodar {
     $lista = Resumo $mudancas $manifesto
     try {
       $sha = Publicar $mudancas $manifesto $head
+      if (-not $sha) { Log 'AVISO' 'nenhum arquivo pôde ser enviado (veja os avisos acima)'; return 0 }
       Log 'OK' ("publicado (commit $($sha.Substring(0, 7))): " + ($lista -join '; '))
       return 0
     } catch {

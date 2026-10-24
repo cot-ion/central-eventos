@@ -54,6 +54,13 @@ class TestGerarDados(unittest.TestCase):
         # manuais primeiro
         self.assertEqual(d["eventos"][0]["id"], MANUAL["eventos"][0]["id"])
 
+    def test_manual_so_enquanto_nao_ha_pptx(self):
+        self.assertEqual(len(gerar(self.pasta, MANUAL, {}, manual_so_sem_pptx=True)["eventos"]), len(MANUAL["eventos"]))
+        gerar_pptx(self.pasta / "Infografico.pptx")
+        d = gerar(self.pasta, MANUAL, {}, manual_so_sem_pptx=True)
+        self.assertEqual(len(d["eventos"]), 2)
+        self.assertFalse(any(a.get("manual") for a in d["arquivos"].values()))
+
     def test_ids_repetidos_ganham_sufixo(self):
         gerar_pptx(self.pasta / "A.pptx")
         shutil.copy(self.pasta / "A.pptx", self.pasta / "Sub pasta" / "A.pptx")  # mesmo nome de arquivo → mesmo ID
