@@ -47,6 +47,7 @@ coloque no repositório (o `.gitignore` já impede).
 | `espelhar_remocoes` | `true`: arquivo apagado da pasta sai do site também. |
 | `limite_remocao_pct` | Não remove se sumir mais que isso de uma vez (OneDrive desconectado?). |
 | `tamanho_maximo_mb` | Arquivos maiores são ignorados (o GitHub recusa acima de 100 MB). |
+| `ocultar_com_vbs` | `true` usa o `executar-oculto.vbs` para não piscar janela. Só funciona se o antivírus permitir (o Kaspersky da empresa bloqueia). Padrão: `false`. |
 
 ## 3. Instalar numa baia
 
@@ -105,6 +106,7 @@ Se o token vencer antes, nada quebra no site: as baias só param de publicar
 | `sem conexão com api.github.com` | Rede ou proxy. A baia tenta de novo na próxima rodada. |
 | `removeria N de M arquivos` | Proteção: sumiu muita coisa de uma vez. Se foi de propósito, rode o `publicar.ps1 -Forcar` uma vez. |
 | `salvo há menos de 2 min` | Normal: espera o OneDrive terminar de gravar. |
+| Antivírus: *Start of PowerShell from the VBScript script* | O antivírus bloqueia o `executar-oculto.vbs`. Deixe `ocultar_com_vbs` ausente ou `false` (o padrão) e rode o `instalar.bat` de novo: a tarefa passa a chamar o PowerShell direto. |
 
 **Duas baias ao mesmo tempo** não é problema: se outra baia publicar no meio
 do caminho, a baia compara de novo e, se já estiver em dia, só encerra.

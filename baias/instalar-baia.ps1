@@ -91,14 +91,16 @@ $intervalo = 15
 if ($cfg.intervalo_minutos) { $intervalo = [math]::Min([math]::Max([int]$cfg.intervalo_minutos, 5), 1440) }
 $vbs = Join-Path $Destino 'executar-oculto.vbs'
 $ps1 = Join-Path $Destino 'publicar.ps1'
-if (Test-Path -LiteralPath (Join-Path $env:SystemRoot 'System32\wscript.exe')) {
+# Padrão: a tarefa chama o PowerShell direto (pode piscar uma janela por um instante).
+# O executar-oculto.vbs evita a janela, mas antivírus corporativos (ex.: Kaspersky,
+# regra "Start of PowerShell from the VBScript script") bloqueiam VBScript abrindo
+# PowerShell — por isso só é usado com "ocultar_com_vbs": true no config.json.
+$exe = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+$argumentos = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $ps1 + '"'
+if ($cfg.ocultar_com_vbs -eq $true -and (Test-Path -LiteralPath (Join-Path $env:SystemRoot 'System32\wscript.exe'))) {
   $exe = Join-Path $env:SystemRoot 'System32\wscript.exe'
   $argumentos = '"' + $vbs + '"'
-} else {
-  # Sem VBScript (Windows futuro): chama o PowerShell direto; pode piscar uma janela.
-  $exe = 'powershell.exe'
-  $argumentos = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $ps1 + '"'
-  Aviso 'wscript.exe não disponível — a tarefa chamará o PowerShell direto (pode piscar uma janela).'
+  Aviso 'usando executar-oculto.vbs (ocultar_com_vbs = true).'
 }
 $tr = ('"' + $exe + '" ' + $argumentos).Replace('"', '\"')
 
