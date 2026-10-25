@@ -26,28 +26,7 @@
   --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color-scheme: light;
-    --bg: #f4f6fb;
-    --bg-2: #eaeef7;
-    --surface: #ffffff;
-    --surface-2: #f6f8fc;
-    --border: #dfe5f0;
-    --border-2: #c9d3e5;
-    --text: #0f172a;
-    --muted: #5b6b86;
-    --accent: #2563eb;
-    --accent-2: #1d4ed8;
-    --ida: #0284c7;
-    --volta: #d97706;
-    --via: #64748b;
-    --pill-bg: #eef2f9;
-    --pill-text: #1e293b;
-    --mark: rgba(250, 204, 21, 0.45);
-    --shadow: 0 10px 30px -16px rgba(15, 23, 42, 0.25);
-  }
-}
+/* Sempre escuro: não há tema claro, seja qual for a configuração do aparelho. */
 
 /* ============================================================== BASE === */
 *,
