@@ -57,7 +57,11 @@ Logado com o usuário da baia (o que tem o OneDrive), dê dois cliques em
 sem publicar, mostrando o que a baia enviaria. Pronto: a partir daí a baia
 publica sozinha a cada 15 minutos e ao fazer login.
 
-Para publicar na hora, sem esperar: `schtasks /Run /TN "CentralEventos - %USERNAME%"`
+No fim, se tudo deu certo, o instalador **já faz a primeira publicação**.
+
+Para publicar na hora depois disso (ex.: logo após salvar um slide), sem
+esperar os 15 minutos: dois cliques em **`publicar-agora.bat`**. Ele mostra o
+resultado na tela.
 
 **Baias compartilhadas:** cada pessoa instala com o próprio usuário, e as
 tarefas levam o nome dela (`CentralEventos - fulano`), então várias pessoas
@@ -97,7 +101,7 @@ Se o token vencer antes, nada quebra no site: as baias só param de publicar
 
 1. `config.json` com `"destino": "pptx-teste"` → `instalar.bat`.
    Confira o teste sem publicar no fim da instalação.
-2. `schtasks /Run /TN "CentralEventos - %USERNAME%"` → em ~2 min, abra o site com
+2. `publicar-agora.bat` → em ~2 min, abra o site com
    **`?fonte=teste`** no fim do endereço (faixa amarela "TESTE").
    O site normal não muda.
 3. Tudo certo: troque para `"destino": "pptx"` e rode o
