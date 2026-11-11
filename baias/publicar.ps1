@@ -20,6 +20,10 @@
 .PARAMETER Diagnostico
   Testa conexão, token, permissão de escrita e pasta, mostrando [OK]/[FALHA],
   e termina com um DryRun. Usado pelo instalar.bat.
+.PARAMETER Laco
+  Modo em segundo plano, para quando o Windows não deixa criar a tarefa
+  agendada: fica rodando e confere a pasta a cada intervalo_minutos, enquanto
+  o usuário estiver logado. Iniciado pelo atalho da pasta Inicialização.
 .PARAMETER Forcar
   Publica remoções mesmo acima do limite de segurança (limite_remocao_pct).
 
@@ -31,6 +35,7 @@ param(
   [switch]$DryRun,
   [switch]$Diagnostico,
   [switch]$Forcar,
+  [switch]$Laco,
   [string]$Config = ""
 )
 
@@ -620,26 +625,51 @@ function Avisar-Token {
   }
 }
 
-# Uma execução por vez nesta baia (a tarefa de 15 min e a de login podem coincidir).
-$mutex = New-Object System.Threading.Mutex($false, 'Local\CentralEventosPublicar')
-$codigo = 1
-try {
-  if (-not $mutex.WaitOne(0)) {
-    Log 'INFO' 'outra execução já está em andamento — saindo'
-    $codigo = 0
-  } else {
-    try {
-      $codigo = [int](@(Rodar) | Select-Object -Last 1)   # só o código de saída, mesmo se algo "vazar" na saída
-      Avisar-Token
-    } catch {
-      if ($Diagnostico) { Resultado $false $_.Exception.Message } else { Log 'ERRO' $_.Exception.Message }
-      $codigo = 1
-    } finally {
-      $mutex.ReleaseMutex()
-    }
-  }
-} finally {
-  $mutex.Dispose()
-  Girar-Log
+function Pegar-Trava([System.Threading.Mutex]$m) {
+  # Se uma execução anterior foi interrompida no meio (baia desligada, processo
+  # encerrado), o Windows entrega a trava com AbandonedMutexException: é nossa.
+  try { return $m.WaitOne(0) } catch [System.Threading.AbandonedMutexException] { return $true }
 }
-exit $codigo
+
+function Uma-Rodada {
+  # Uma execução por vez nesta baia (a tarefa periódica e a de login podem coincidir).
+  $mutex = New-Object System.Threading.Mutex($false, 'Local\CentralEventosPublicar')
+  $codigo = 1
+  try {
+    if (-not (Pegar-Trava $mutex)) {
+      Log 'INFO' 'outra execução já está em andamento — saindo'
+      $codigo = 0
+    } else {
+      try {
+        $codigo = [int](@(Rodar) | Select-Object -Last 1)   # só o código de saída, mesmo se algo "vazar" na saída
+        Avisar-Token
+      } catch {
+        if ($Diagnostico) { Resultado $false $_.Exception.Message } else { Log 'ERRO' $_.Exception.Message }
+        $codigo = 1
+      } finally {
+        $mutex.ReleaseMutex()
+      }
+    }
+  } finally {
+    $mutex.Dispose()
+    Girar-Log
+  }
+  return $codigo
+}
+
+if ($Laco) {
+  $mutexLaco = New-Object System.Threading.Mutex($false, 'Local\CentralEventosLaco')
+  if (-not (Pegar-Trava $mutexLaco)) { exit 0 }   # o modo em segundo plano já está rodando
+  Log 'INFO' 'modo em segundo plano iniciado'
+  while ($true) {
+    [void](Uma-Rodada)
+    $minutos = 15
+    try {
+      $c = Ler-Json $Config
+      if ($c -and $c.intervalo_minutos) { $minutos = [math]::Min([math]::Max([int]$c.intervalo_minutos, 5), 1440) }
+    } catch { }
+    Start-Sleep -Seconds ($minutos * 60)
+  }
+}
+
+exit (Uma-Rodada)

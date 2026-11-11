@@ -57,7 +57,14 @@ Logado com o usuário da baia (o que tem o OneDrive), dê dois cliques em
 sem publicar, mostrando o que a baia enviaria. Pronto: a partir daí a baia
 publica sozinha a cada 15 minutos e ao fazer login.
 
-Para publicar na hora, sem esperar: `schtasks /Run /TN CentralEventos`
+Para publicar na hora, sem esperar: `schtasks /Run /TN "CentralEventos - %USERNAME%"`
+
+**Baias compartilhadas:** cada pessoa instala com o próprio usuário, e as
+tarefas levam o nome dela (`CentralEventos - fulano`), então várias pessoas
+podem instalar no mesmo computador. Se o Windows não deixar criar tarefas
+agendadas para aquele usuário, o instalador mostra `[AVISO]` e usa o **modo em
+segundo plano**: um atalho na pasta Inicialização mantém a conferência a cada
+15 minutos enquanto a pessoa estiver logada. O resultado é o mesmo.
 
 ## 4. Verificar
 
@@ -73,7 +80,7 @@ Para publicar na hora, sem esperar: `schtasks /Run /TN CentralEventos`
 
 ## 5. Desinstalar
 
-Dois cliques em **`desinstalar.bat`**: remove as tarefas, o atalho (se houver)
+Dois cliques em **`desinstalar.bat`**: remove as tarefas deste usuário, o atalho e o modo em segundo plano (se houver)
 e a pasta `%LOCALAPPDATA%\CentralEventos`.
 
 ## Renovar o token (quando estiver perto de vencer)
@@ -90,7 +97,7 @@ Se o token vencer antes, nada quebra no site: as baias só param de publicar
 
 1. `config.json` com `"destino": "pptx-teste"` → `instalar.bat`.
    Confira o teste sem publicar no fim da instalação.
-2. `schtasks /Run /TN CentralEventos` → em ~2 min, abra o site com
+2. `schtasks /Run /TN "CentralEventos - %USERNAME%"` → em ~2 min, abra o site com
    **`?fonte=teste`** no fim do endereço (faixa amarela "TESTE").
    O site normal não muda.
 3. Tudo certo: troque para `"destino": "pptx"` e rode o
@@ -107,6 +114,7 @@ Se o token vencer antes, nada quebra no site: as baias só param de publicar
 | `sem conexão com api.github.com` | Rede ou proxy. A baia tenta de novo na próxima rodada. |
 | `removeria N de M arquivos` | Proteção: sumiu muita coisa de uma vez. Se foi de propósito, rode o `publicar.ps1 -Forcar` uma vez. |
 | `salvo há menos de 2 min` | Normal: espera o OneDrive terminar de gravar. |
+| Instalador: `não foi possível criar a tarefa agendada: Acesso negado` | Versões antigas usavam o mesmo nome de tarefa para todos os usuários do computador. Rode o `instalar.bat` desta versão: o nome passa a levar o usuário e, se o Windows ainda negar, entra o modo em segundo plano. |
 | Antivírus: *Start of PowerShell from the VBScript script* | O antivírus bloqueia o `executar-oculto.vbs`. Deixe `ocultar_com_vbs` ausente ou `false` (o padrão) e rode o `instalar.bat` de novo: a tarefa passa a chamar o PowerShell direto. |
 
 **Duas baias ao mesmo tempo** não é problema: se outra baia publicar no meio

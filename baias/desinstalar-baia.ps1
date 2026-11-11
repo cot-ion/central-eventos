@@ -29,7 +29,23 @@ function Nativo([string]$exe, [string]$argumentos) {
 Write-Host ''
 Write-Host '=== Central de Eventos - desinstalação ===' -ForegroundColor Cyan
 
-foreach ($nome in @('CentralEventos', 'CentralEventos - Login')) {
+# Encerra o modo em segundo plano (só processos deste usuário).
+Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+  Where-Object { $_.CommandLine -like '*CentralEventos*publicar.ps1*' } |
+  ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue; Ok 'Execução em segundo plano encerrada' }
+
+$Usuario = $env:USERNAME -replace '[\\/:*?"<>|]', '_'
+$nomes = @("CentralEventos - $Usuario", "CentralEventos - Login - $Usuario")
+# Nomes usados por instalações antigas: só remove se a tarefa for deste usuário
+# (em baias compartilhadas, pode ser de outra pessoa).
+foreach ($antigo in @('CentralEventos', 'CentralEventos - Login')) {
+  try {
+    $t = Get-ScheduledTask -TaskName $antigo -ErrorAction Stop | Select-Object -First 1
+    if ($t -and ($t.Principal.UserId -split '\\')[-1] -eq $env:USERNAME) { $nomes += $antigo }
+  } catch { }
+}
+
+foreach ($nome in $nomes) {
   $r = Nativo 'schtasks.exe' "/Query /TN `"$nome`""
   if ($r.codigo -ne 0) { continue }   # não existe
   $r = Nativo 'schtasks.exe' "/Delete /F /TN `"$nome`""
