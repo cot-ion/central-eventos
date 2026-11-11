@@ -11,6 +11,7 @@
      pasta Inicialização mantém o publicar.ps1 rodando (-Laco) enquanto o
      usuário estiver logado.
   4. roda um diagnóstico com [OK]/[FALHA] e um teste sem publicar (DryRun)
+  5. se tudo deu certo, já faz a primeira publicação
 
   Rodar de novo é seguro: serve para trocar o token ou mudar a configuração.
 #>
@@ -206,6 +207,14 @@ Write-Host ''
 Write-Host '--- Diagnóstico (nada é publicado agora) ---' -ForegroundColor Cyan
 & $ps1 -Diagnostico
 if ($LASTEXITCODE -ne 0) { $script:Falhas++ }
+
+# 6. primeira publicação, na hora (se a instalação não teve falhas) ----------
+if ($script:Falhas -eq 0) {
+  Write-Host ''
+  Write-Host '--- Publicando agora ---' -ForegroundColor Cyan
+  & $ps1
+  if ($LASTEXITCODE -ne 0) { $script:Falhas++ }
+}
 if ($emSegundoPlano) {
   Start-Process -FilePath $powershell -ArgumentList $argumentosLaco -WindowStyle Hidden -WorkingDirectory $Destino
 }
@@ -213,8 +222,8 @@ if ($emSegundoPlano) {
 Write-Host ''
 if ($script:Falhas -eq 0) {
   Write-Host '=== INSTALAÇÃO CONCLUÍDA ===' -ForegroundColor Green
-  Write-Host "A publicação roda sozinha a cada $intervalo minutos (a primeira em até $intervalo min)."
-  if ($temTarefa) { Write-Host "Para publicar agora:   schtasks /Run /TN `"$NomeTarefa`"" }
+  Write-Host "Daqui em diante, a publicação roda sozinha a cada $intervalo minutos."
+  Write-Host 'Para publicar na hora (ex.: logo depois de salvar um slide): publicar-agora.bat'
 } else {
   Write-Host "=== INSTALAÇÃO COM $($script:Falhas) FALHA(S) — veja as linhas [FALHA] acima ===" -ForegroundColor Red
 }
