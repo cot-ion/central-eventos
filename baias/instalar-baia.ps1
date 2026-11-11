@@ -4,7 +4,12 @@
 
   1. copia publicar.ps1 e executar-oculto.vbs para %LOCALAPPDATA%\CentralEventos
   2. guarda o config.json com o token criptografado (DPAPI: só este usuário lê)
-  3. cria a tarefa agendada (a cada N minutos) e a execução ao fazer login
+  3. cria a tarefa agendada (a cada N minutos) e a execução ao fazer login.
+     O nome leva o usuário ("CentralEventos - fulano"): no Windows o nome da
+     tarefa é único por computador, e baias são compartilhadas. Se o Windows
+     negar a criação de tarefas, usa o "modo em segundo plano": um atalho na
+     pasta Inicialização mantém o publicar.ps1 rodando (-Laco) enquanto o
+     usuário estiver logado.
   4. roda um diagnóstico com [OK]/[FALHA] e um teste sem publicar (DryRun)
 
   Rodar de novo é seguro: serve para trocar o token ou mudar a configuração.
@@ -15,8 +20,10 @@ $script:Falhas = 0
 
 $Origem = $PSScriptRoot
 $Destino = Join-Path $env:LOCALAPPDATA 'CentralEventos'
-$NomeTarefa = 'CentralEventos'
-$NomeTarefaLogin = 'CentralEventos - Login'
+$Usuario = $env:USERNAME -replace '[\\/:*?"<>|]', '_'
+$NomeTarefa = "CentralEventos - $Usuario"
+$NomeTarefaLogin = "CentralEventos - Login - $Usuario"
+$NomesAntigos = @('CentralEventos', 'CentralEventos - Login')   # instalações anteriores a esta versão
 $Atalho = Join-Path ([Environment]::GetFolderPath('Startup')) 'CentralEventos.lnk'
 $Utf8 = New-Object System.Text.UTF8Encoding($false)
 
@@ -91,12 +98,14 @@ $intervalo = 15
 if ($cfg.intervalo_minutos) { $intervalo = [math]::Min([math]::Max([int]$cfg.intervalo_minutos, 5), 1440) }
 $vbs = Join-Path $Destino 'executar-oculto.vbs'
 $ps1 = Join-Path $Destino 'publicar.ps1'
+$powershell = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
 # Padrão: a tarefa chama o PowerShell direto (pode piscar uma janela por um instante).
 # O executar-oculto.vbs evita a janela, mas antivírus corporativos (ex.: Kaspersky,
 # regra "Start of PowerShell from the VBScript script") bloqueiam VBScript abrindo
 # PowerShell — por isso só é usado com "ocultar_com_vbs": true no config.json.
-$exe = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
-$argumentos = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $ps1 + '"'
+$argumentosPs = '-NoProfile -NonInteractive -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + $ps1 + '"'
+$exe = $powershell
+$argumentos = $argumentosPs
 if ($cfg.ocultar_com_vbs -eq $true -and (Test-Path -LiteralPath (Join-Path $env:SystemRoot 'System32\wscript.exe'))) {
   $exe = Join-Path $env:SystemRoot 'System32\wscript.exe'
   $argumentos = '"' + $vbs + '"'
@@ -104,54 +113,92 @@ if ($cfg.ocultar_com_vbs -eq $true -and (Test-Path -LiteralPath (Join-Path $env:
 }
 $tr = ('"' + $exe + '" ' + $argumentos).Replace('"', '\"')
 
+# Para um modo em segundo plano de uma instalação anterior (só processos deste usuário).
+Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+  Where-Object { $_.CommandLine -like '*CentralEventos*publicar.ps1*-Laco*' } |
+  ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+
+# Remove tarefas com o nome antigo, só se forem deste usuário.
+foreach ($antigo in $NomesAntigos) {
+  try {
+    $t = Get-ScheduledTask -TaskName $antigo -ErrorAction Stop | Select-Object -First 1
+    if ($t -and ($t.Principal.UserId -split '\\')[-1] -eq $env:USERNAME) {
+      Unregister-ScheduledTask -TaskName $antigo -Confirm:$false -ErrorAction Stop
+      Ok "Tarefa antiga '$antigo' substituída por '$NomeTarefa'"
+    }
+  } catch { }
+}
+
+$temTarefa = $false
 $r = Nativo 'schtasks.exe' "/Create /F /TN `"$NomeTarefa`" /SC MINUTE /MO $intervalo /RL LIMITED /TR `"$tr`""
 if ($r.codigo -eq 0) {
+  $temTarefa = $true
   Ok "Tarefa '$NomeTarefa' a cada $intervalo minutos"
 } else {
   try {
     $acao = New-ScheduledTaskAction -Execute $exe -Argument $argumentos -WorkingDirectory $Destino
     $gatilho = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes $intervalo)
     Register-ScheduledTask -TaskName $NomeTarefa -Action $acao -Trigger $gatilho -Force | Out-Null
+    $temTarefa = $true
     Ok "Tarefa '$NomeTarefa' a cada $intervalo minutos (via Register-ScheduledTask)"
   } catch {
-    Falha "não foi possível criar a tarefa agendada: $($r.saida) / $($_.Exception.Message)"
+    Aviso "o Windows não deixou criar a tarefa agendada ($($r.saida)). Usando o modo em segundo plano."
   }
 }
 
-# 4. execução ao fazer login (3 tentativas, da melhor para a mais simples) ----
-$login = $null
-$r = Nativo 'schtasks.exe' "/Create /F /TN `"$NomeTarefaLogin`" /SC ONLOGON /RL LIMITED /TR `"$tr`""
-if ($r.codigo -eq 0) {
-  $login = 'tarefa agendada (schtasks)'
-} else {
-  try {
-    $usuario = "$env:USERDOMAIN\$env:USERNAME"
-    Register-ScheduledTask -TaskName $NomeTarefaLogin -Force `
-      -Action (New-ScheduledTaskAction -Execute $exe -Argument $argumentos -WorkingDirectory $Destino) `
-      -Trigger (New-ScheduledTaskTrigger -AtLogOn -User $usuario) `
-      -Principal (New-ScheduledTaskPrincipal -UserId $usuario -LogonType Interactive -RunLevel Limited) `
-      -Settings (New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries) |
-      Out-Null
-    $login = 'tarefa agendada (Register-ScheduledTask)'
-  } catch {
+# 4. execução ao fazer login --------------------------------------------------
+function Criar-Atalho([string]$argumentosAtalho) {
+  $sh = New-Object -ComObject WScript.Shell
+  $lnk = $sh.CreateShortcut($Atalho)
+  $lnk.TargetPath = $powershell
+  $lnk.Arguments = $argumentosAtalho
+  $lnk.WorkingDirectory = $Destino
+  $lnk.WindowStyle = 7
+  $lnk.Description = 'Central de Eventos - publica a pasta do SharePoint no site'
+  $lnk.Save()
+}
+
+$emSegundoPlano = $false
+if ($temTarefa) {
+  # Com a tarefa periódica funcionando, só falta rodar também ao fazer login (3 tentativas).
+  $login = $null
+  $r = Nativo 'schtasks.exe' "/Create /F /TN `"$NomeTarefaLogin`" /SC ONLOGON /RL LIMITED /TR `"$tr`""
+  if ($r.codigo -eq 0) {
+    $login = 'tarefa agendada (schtasks)'
+  } else {
     try {
-      $sh = New-Object -ComObject WScript.Shell
-      $lnk = $sh.CreateShortcut($Atalho)
-      $lnk.TargetPath = $exe
-      $lnk.Arguments = $argumentos
-      $lnk.WorkingDirectory = $Destino
-      $lnk.WindowStyle = 7
-      $lnk.Description = 'Central de Eventos - publica a pasta do SharePoint no site'
-      $lnk.Save()
-      $login = 'atalho na pasta Inicialização'
+      $contaLogin = "$env:USERDOMAIN\$env:USERNAME"   # (não chamar de $usuario: o PowerShell não diferencia de $Usuario)
+      Register-ScheduledTask -TaskName $NomeTarefaLogin -Force `
+        -Action (New-ScheduledTaskAction -Execute $exe -Argument $argumentos -WorkingDirectory $Destino) `
+        -Trigger (New-ScheduledTaskTrigger -AtLogOn -User $contaLogin) `
+        -Principal (New-ScheduledTaskPrincipal -UserId $contaLogin -LogonType Interactive -RunLevel Limited) `
+        -Settings (New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries) |
+        Out-Null
+      $login = 'tarefa agendada (Register-ScheduledTask)'
     } catch {
-      Falha "não foi possível configurar a execução ao fazer login: $($_.Exception.Message)"
+      try {
+        Criar-Atalho $argumentosPs
+        $login = 'atalho na pasta Inicialização'
+      } catch {
+        Falha "não foi possível configurar a execução ao fazer login: $($_.Exception.Message)"
+      }
     }
   }
-}
-if ($login) {
-  Ok "Execução ao fazer login: $login"
-  if ($login -notlike 'atalho*' -and (Test-Path -LiteralPath $Atalho)) { Remove-Item -LiteralPath $Atalho -Force }
+  if ($login) {
+    Ok "Execução ao fazer login: $login"
+    if ($login -notlike 'atalho*' -and (Test-Path -LiteralPath $Atalho)) { Remove-Item -LiteralPath $Atalho -Force }
+  }
+} else {
+  # Modo em segundo plano: o atalho da Inicialização abre o publicar.ps1 em laço
+  # (confere a pasta a cada N minutos enquanto o usuário estiver logado).
+  $argumentosLaco = $argumentosPs + ' -Laco'
+  try {
+    Criar-Atalho $argumentosLaco
+    $emSegundoPlano = $true   # o laço é iniciado depois do diagnóstico, para não disputar a trava com ele
+    Ok "Modo em segundo plano: confere a pasta a cada $intervalo minutos enquanto você estiver logado (atalho na pasta Inicialização)"
+  } catch {
+    Falha "não foi possível ativar o modo em segundo plano: $($_.Exception.Message)"
+  }
 }
 
 # 5. diagnóstico + teste sem publicar -----------------------------------------
@@ -159,12 +206,15 @@ Write-Host ''
 Write-Host '--- Diagnóstico (nada é publicado agora) ---' -ForegroundColor Cyan
 & $ps1 -Diagnostico
 if ($LASTEXITCODE -ne 0) { $script:Falhas++ }
+if ($emSegundoPlano) {
+  Start-Process -FilePath $powershell -ArgumentList $argumentosLaco -WindowStyle Hidden -WorkingDirectory $Destino
+}
 
 Write-Host ''
 if ($script:Falhas -eq 0) {
   Write-Host '=== INSTALAÇÃO CONCLUÍDA ===' -ForegroundColor Green
-  Write-Host "A tarefa publica sozinha a cada $intervalo minutos (a primeira em até $intervalo min)."
-  Write-Host "Para publicar agora:   schtasks /Run /TN $NomeTarefa"
+  Write-Host "A publicação roda sozinha a cada $intervalo minutos (a primeira em até $intervalo min)."
+  if ($temTarefa) { Write-Host "Para publicar agora:   schtasks /Run /TN `"$NomeTarefa`"" }
 } else {
   Write-Host "=== INSTALAÇÃO COM $($script:Falhas) FALHA(S) — veja as linhas [FALHA] acima ===" -ForegroundColor Red
 }
