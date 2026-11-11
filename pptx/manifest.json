@@ -1,16 +1,16 @@
 {
     "versao":  1,
-    "atualizado_em":  "2026-11-11T20:28:06Z",
-    "atualizado_por":  "APH-XT6ATBGTOT0",
+    "atualizado_em":  "2026-11-11T20:48:19Z",
+    "atualizado_por":  "WP060999D",
     "token_expira_em":  "2027-10-24T03:00:00Z",
     "arquivos":  {
                      "INFOGRAFICO PRODUÇÕES COT 2025.pptx":  {
-                                                                 "tamanho":  35241564,
-                                                                 "modificado":  "2026-11-11T20:20:55Z",
-                                                                 "sha":  "cf18fec9309b30fdc986d7be556ddf74589b2c06",
-                                                                 "sha_publicado":  "994cbb67269a4bcc55c878ce38b310a7c62e30d3",
-                                                                 "enviado_em":  "2026-11-11T20:28:06Z",
-                                                                 "enviado_por":  "APH-XT6ATBGTOT0"
+                                                                 "tamanho":  35246233,
+                                                                 "modificado":  "2026-11-11T20:40:58Z",
+                                                                 "sha":  "4734f415bf04d586f0b4cb5a5f3ea3f61a0251fd",
+                                                                 "sha_publicado":  "a05b66e2890d79c3f1e1065124f2dcf6b0b74f4a",
+                                                                 "enviado_em":  "2026-11-11T20:48:19Z",
+                                                                 "enviado_por":  "WP060999D"
                                                              }
                  }
 }
